@@ -1,4 +1,4 @@
-name: VisionOpticalCRMCore_DeployToStaging
+name: VisionOpticalCRMBackend_DeployToStaging
 on:
   push:
     branches: [ dev-ola ]
@@ -10,230 +10,99 @@ jobs:
       - name: Add public IP to AWS security group
         uses: sohelamin/aws-security-group-add-ip-action@master
         with:
-          aws-access-key-id: 'AKIAT4JHVB4A3MOHQZ7Q'
-          aws-secret-access-key: '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'
-          aws-region:  'eu-west-1'
-          aws-security-group-id: 'sg-0917a411c6afa6089'
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
+          aws-secret-access-key: ${{secrets.AWS_ACCESS_SECRET}}
+          aws-region:  ${{secrets.AWS_REGION}}
+          aws-security-group-id: ${{secrets.AWS_SG}}
           protocol: 'tcp'
           description: 'GitHub Action Access (Staging)'
-      - name: Clear Out VisionOpticalCRMCore Directory
+      - name: Clear Out VisionOpticalCRMHub Directory
         uses: appleboy/ssh-action@master
         with:
           host: ${{secrets.HOST}}
           username: ${{secrets.USER}}
-          key: "-----BEGIN RSA PRIVATE KEY-----
-                MIIJKgIBAAKCAgEA5g8X+wQLNWtwbHAFVso3zJXThXnQZzFHRnPt4nbDK1C/pThm
-                /Qih3b+uQpTOKErBYhecCsxAzs2zt2pIRcKH9WNiJDcJTpQd1IgIIEVeBGPgaMbq
-                Dnycc01+v8VmDGUEoSFaKsYTrfIBrSmKBa8Srl379CEARIHV/nPHJvScCc1AGv7j
-                pWbBiLAnFE7oigZdkHhqzVMqiUWDEnqxrYLpaV/VG7UHYA+QlC6XXJJcMJsCpD8O
-                aR/wk5bZq99nqye8xl2/FlkA2fAFUJse0RsLPwKM39tYYKWG/z5OtNuQxD4xm2Eo
-                8vto9l8wBW+xt3IjE9db7lKPruQBk0ksmgbYh2CFEGU0kzm2PeKavu/wptr4L68R
-                Jway0ncHsJ9XhohDKBT153dBoweFf6BE5bGGlMzEekKRNCkdpWJ7cN6cBkBwLcdd
-                GZxiGCa5LX7Mevw3ut1SGTE+3YTwxUdzYx0yxXjmNmovMVzXfb1DLu4kNo9W8Pr6
-                jOl26bi10KtURwZ+Q7ii5+XKYKI2vT9QO1VWTWmtVzzYrh2y1xDolVdi71qzLZhR
-                WJV4ocEDWT9lXJajF9RPCQC80BvvyxQ/Gtb14wybD9ro2+dGYmj0g2/dyyIhT7/m
-                VNFx1xohSC7pf2Ak3yzdDZUewc25UcT9810dMwoGRJPs1YT97nhXImaWO0kCAwEA
-                AQKCAgEA3mufUqcRMx9hfOU8tDEji18bNkOUMgBZmYrBZZ5OiNUzw8fpAh/TZrFI
-                B8UYH6pOlsieq23YBlintN9DanZtvdfM7ZhsHhVjVbQCrziBchshvgr6BPGCzJMS
-                xNNTGw6bUDEPnKUOJ7D+3+x2LZKarAvfaKJzQMiKHMzQsR/ysCNJJBBkBOh4me88
-                iQzVE4Sd9uwEzefnCvoyg64tk8QqaB8nyPbXX48Mx8bXvb8e9DsZbbQs+YPQstA4
-                OEvwTXBIuTuvYCrCgPHmIY0nWSEdWVjc3ByTsDS4dJNHwuE4cBJ1IXTpAyn/y5ox
-                sj/PgL0PnsIqdhpKIdr8jupC/dM6iKppeznAUlgffv5Vw2L+bDgxoz9IWZUB4MLP
-                ZzDVvW7f1VurtPtMHtwmbo+EvmX664Ke23ixC6ll9Tt8Vw6DywAvaUvmlS3zp4b/
-                35MelVDMRJxpP2E7AkqszMSxY/wDvbM34EbECcp5JTeG/84F3O5oLlR1kZSsJxih
-                rrcvKu2X7DfPesO3TCyFXb3SEjA/drZ9z3Mw8kF7VQpRsBLgEDYgqnBS+Dgek3/6
-                LPwhYShJgB62KBGgpfbIIwCcTikR03Tdi8hq/qSXDzb7OgkhOeOpeKNjc3LtCrqa
-                5Tz112Bnz4vtu81x+gNqYvf0Ym3MhWtoD4fz8KCNLX427At6WxECggEBAOzTvh5f
-                yJAe80ETnI3iuUxOHBauUpGw1Kzfw83Mxme3eP7mLsL4o5AfojB9U1KONPJzzoaU
-                S6MH80x+lkjqLB8scAxAbqAdNDlKaDcifSOY1yX2qmb0Q6RvepQqVKUB44DQJ0EI
-                qZSdezlVBdAkqjO08MYecjfrs2X7WeOgEpSjEqfHK84jHHDGhGytfFmknEYeKTyg
-                B62ZXUTsB9TJZCb6eIYzNkhv0SuUlT7vLdFyF0hGNHd81C1puTmlf/L5okFYNVtN
-                yTQwnfASqxeaAAEMtKg7Jl0dhSUECoc15vEXaZVdI6aE/gIWvLU5E/3wPZXK9pN+
-                jiE6pWZCDCrkCp0CggEBAPivFJmWWQnIt28Y6joxdCzFg0Eh6xkB4yMFx7gastsu
-                FJbwntBQBPbWTw8th7OZD5GtKGvKA8Ype5FaZ94x+STINr/9OcTWGB0o3MIldF0t
-                hiSsVVaSCUZDwnlnHzsx7ieoqj4ZMOR+OmovNGfiobno35xH4VPrBphyAdU+WxNO
-                Bd8kpwiJyNJyogtsaE76ouvO/jlNNrNXLHdTizNqqMfVMo9LO+62qPhROQqIYh3D
-                3/wsSw1j8d2R7dPEPVjbNo6YbekRTy9kLuUEHoYocb/P15GfN/riAhj4P4Ss7nrc
-                mo7T9T+Q380vWae0YNoRGpO0N1bgQShSd4I7gmpszZ0CggEBAOhkp606pJ74IA/9
-                5KQ+lUJRa7K+APxCH5A8S/HJPfBM1Aida8mbHzWwNQGMGZVrQn2gMktRfh9PD+pC
-                VcrbL8yvWIxNNcEcp0CIyVdBGrcxpf303SYGD9JuKkT2fPUms06V888XZwEUv/R0
-                gC3NrM7sgVCIU+CYBATQ71Y0n8cHdqj5Av1W6vOneg8C9oEozMjpk+GPz7kEQ8f8
-                LXsa3JJ7OoXF/0B5qTIwrXuCTN24LSyY56dQ8QxXMJFm2/VcDWI94q3j2MrD4lfQ
-                md+hGNvu0eA7mtvIufymyIYB2MtABDWzneYrnu4Bzc+vYPTRKD2zWt9FUsc8u01r
-                BnGYMOkCggEAAtSrXVwyw0O/osob0HHDqsbMya8DKBO3bCyiq1vScWBC57zxcdmX
-                VN/3omqYQtkZLkVUUnXIOTc7qtnmmMbk2SBWTzUotS7is2JFsQgQHQdpoX08s3GS
-                HXSkABHGbzwQQ+9NkMtknRU6wP6skAoqYR1ffj3rOLNSLeYOU0kUbFHVC0c1h4lZ
-                +dtIMO0Y+t0rgZenmSth1gTGAs22pe0u4qdwneTzV7JIlhsGlTIcO86A/DPc3tgm
-                ZqlElcaEFEDajCD8D00dI6L2TbEQT+Kh+Nb60zOGxZpQ/8vDnVUCme9s6vdKsWCK
-                y6EgWiJZf+H19Xx1rM18sGLP7XGT+HYomQKCAQEAppKGdxzGyDzaZvsMsUqCDrci
-                LxFUgbg6m4v+bUQZXcM1KSBgA3qeFOvVJq+5E+mvTR8yY4d50BjeRCCuEzx2rXE0
-                m9/6Ff9tRYgcrHTMYGCFdQ52GfUOfSsi3mbP1+IEOgmVGjFrxS+rNFtV2DwN6MJB
-                hW9o8PVQHKu5pEXSe+53hvAh0zwBLfxTj+0/Thrso2Kg9RdvrhrNj1cl2hpwMzJo
-                MQdh/iBcWu+AH1K0QdCWNCTZTwrxr9SuVfrHY63cfppcydHPARK/HfmqmIs5HjUS
-                snJTazLhya6V7xNP1wOfmvoEQDp70769Q7BQzw93k164miscg4F1GeI1H1sXxA==
-                -----END RSA PRIVATE KEY-----"
+          key: ${{secrets.KEY}}
           port: '22'
           script: |
-            sudo rm -rf /var/www/core-crm.visionenhancingsolutions.app/public/*
-            sudo mkdir /var/www/core-crm.visionenhancingsolutions.app/public
-            sudo chown -R $USER:www-data  /var/www/core-crm.visionenhancingsolutions.app/public
+            sudo rm -rf /var/www/core-crm.visionenhancingsolutions.app/*
+            sudo mkdir /var/www/core-crm.visionenhancingsolutions.app
+            sudo chown -R $USER:www-data  /var/www/core-crm.visionenhancingsolutions.app
       - name: Copy VisionOpticalCRMHubFiles
         uses: appleboy/scp-action@master
         with:
           host:  ${{secrets.HOST}}
           username: ${{secrets.USER}}
-          key: "-----BEGIN RSA PRIVATE KEY-----
-                MIIJKgIBAAKCAgEA5g8X+wQLNWtwbHAFVso3zJXThXnQZzFHRnPt4nbDK1C/pThm
-                /Qih3b+uQpTOKErBYhecCsxAzs2zt2pIRcKH9WNiJDcJTpQd1IgIIEVeBGPgaMbq
-                Dnycc01+v8VmDGUEoSFaKsYTrfIBrSmKBa8Srl379CEARIHV/nPHJvScCc1AGv7j
-                pWbBiLAnFE7oigZdkHhqzVMqiUWDEnqxrYLpaV/VG7UHYA+QlC6XXJJcMJsCpD8O
-                aR/wk5bZq99nqye8xl2/FlkA2fAFUJse0RsLPwKM39tYYKWG/z5OtNuQxD4xm2Eo
-                8vto9l8wBW+xt3IjE9db7lKPruQBk0ksmgbYh2CFEGU0kzm2PeKavu/wptr4L68R
-                Jway0ncHsJ9XhohDKBT153dBoweFf6BE5bGGlMzEekKRNCkdpWJ7cN6cBkBwLcdd
-                GZxiGCa5LX7Mevw3ut1SGTE+3YTwxUdzYx0yxXjmNmovMVzXfb1DLu4kNo9W8Pr6
-                jOl26bi10KtURwZ+Q7ii5+XKYKI2vT9QO1VWTWmtVzzYrh2y1xDolVdi71qzLZhR
-                WJV4ocEDWT9lXJajF9RPCQC80BvvyxQ/Gtb14wybD9ro2+dGYmj0g2/dyyIhT7/m
-                VNFx1xohSC7pf2Ak3yzdDZUewc25UcT9810dMwoGRJPs1YT97nhXImaWO0kCAwEA
-                AQKCAgEA3mufUqcRMx9hfOU8tDEji18bNkOUMgBZmYrBZZ5OiNUzw8fpAh/TZrFI
-                B8UYH6pOlsieq23YBlintN9DanZtvdfM7ZhsHhVjVbQCrziBchshvgr6BPGCzJMS
-                xNNTGw6bUDEPnKUOJ7D+3+x2LZKarAvfaKJzQMiKHMzQsR/ysCNJJBBkBOh4me88
-                iQzVE4Sd9uwEzefnCvoyg64tk8QqaB8nyPbXX48Mx8bXvb8e9DsZbbQs+YPQstA4
-                OEvwTXBIuTuvYCrCgPHmIY0nWSEdWVjc3ByTsDS4dJNHwuE4cBJ1IXTpAyn/y5ox
-                sj/PgL0PnsIqdhpKIdr8jupC/dM6iKppeznAUlgffv5Vw2L+bDgxoz9IWZUB4MLP
-                ZzDVvW7f1VurtPtMHtwmbo+EvmX664Ke23ixC6ll9Tt8Vw6DywAvaUvmlS3zp4b/
-                35MelVDMRJxpP2E7AkqszMSxY/wDvbM34EbECcp5JTeG/84F3O5oLlR1kZSsJxih
-                rrcvKu2X7DfPesO3TCyFXb3SEjA/drZ9z3Mw8kF7VQpRsBLgEDYgqnBS+Dgek3/6
-                LPwhYShJgB62KBGgpfbIIwCcTikR03Tdi8hq/qSXDzb7OgkhOeOpeKNjc3LtCrqa
-                5Tz112Bnz4vtu81x+gNqYvf0Ym3MhWtoD4fz8KCNLX427At6WxECggEBAOzTvh5f
-                yJAe80ETnI3iuUxOHBauUpGw1Kzfw83Mxme3eP7mLsL4o5AfojB9U1KONPJzzoaU
-                S6MH80x+lkjqLB8scAxAbqAdNDlKaDcifSOY1yX2qmb0Q6RvepQqVKUB44DQJ0EI
-                qZSdezlVBdAkqjO08MYecjfrs2X7WeOgEpSjEqfHK84jHHDGhGytfFmknEYeKTyg
-                B62ZXUTsB9TJZCb6eIYzNkhv0SuUlT7vLdFyF0hGNHd81C1puTmlf/L5okFYNVtN
-                yTQwnfASqxeaAAEMtKg7Jl0dhSUECoc15vEXaZVdI6aE/gIWvLU5E/3wPZXK9pN+
-                jiE6pWZCDCrkCp0CggEBAPivFJmWWQnIt28Y6joxdCzFg0Eh6xkB4yMFx7gastsu
-                FJbwntBQBPbWTw8th7OZD5GtKGvKA8Ype5FaZ94x+STINr/9OcTWGB0o3MIldF0t
-                hiSsVVaSCUZDwnlnHzsx7ieoqj4ZMOR+OmovNGfiobno35xH4VPrBphyAdU+WxNO
-                Bd8kpwiJyNJyogtsaE76ouvO/jlNNrNXLHdTizNqqMfVMo9LO+62qPhROQqIYh3D
-                3/wsSw1j8d2R7dPEPVjbNo6YbekRTy9kLuUEHoYocb/P15GfN/riAhj4P4Ss7nrc
-                mo7T9T+Q380vWae0YNoRGpO0N1bgQShSd4I7gmpszZ0CggEBAOhkp606pJ74IA/9
-                5KQ+lUJRa7K+APxCH5A8S/HJPfBM1Aida8mbHzWwNQGMGZVrQn2gMktRfh9PD+pC
-                VcrbL8yvWIxNNcEcp0CIyVdBGrcxpf303SYGD9JuKkT2fPUms06V888XZwEUv/R0
-                gC3NrM7sgVCIU+CYBATQ71Y0n8cHdqj5Av1W6vOneg8C9oEozMjpk+GPz7kEQ8f8
-                LXsa3JJ7OoXF/0B5qTIwrXuCTN24LSyY56dQ8QxXMJFm2/VcDWI94q3j2MrD4lfQ
-                md+hGNvu0eA7mtvIufymyIYB2MtABDWzneYrnu4Bzc+vYPTRKD2zWt9FUsc8u01r
-                BnGYMOkCggEAAtSrXVwyw0O/osob0HHDqsbMya8DKBO3bCyiq1vScWBC57zxcdmX
-                VN/3omqYQtkZLkVUUnXIOTc7qtnmmMbk2SBWTzUotS7is2JFsQgQHQdpoX08s3GS
-                HXSkABHGbzwQQ+9NkMtknRU6wP6skAoqYR1ffj3rOLNSLeYOU0kUbFHVC0c1h4lZ
-                +dtIMO0Y+t0rgZenmSth1gTGAs22pe0u4qdwneTzV7JIlhsGlTIcO86A/DPc3tgm
-                ZqlElcaEFEDajCD8D00dI6L2TbEQT+Kh+Nb60zOGxZpQ/8vDnVUCme9s6vdKsWCK
-                y6EgWiJZf+H19Xx1rM18sGLP7XGT+HYomQKCAQEAppKGdxzGyDzaZvsMsUqCDrci
-                LxFUgbg6m4v+bUQZXcM1KSBgA3qeFOvVJq+5E+mvTR8yY4d50BjeRCCuEzx2rXE0
-                m9/6Ff9tRYgcrHTMYGCFdQ52GfUOfSsi3mbP1+IEOgmVGjFrxS+rNFtV2DwN6MJB
-                hW9o8PVQHKu5pEXSe+53hvAh0zwBLfxTj+0/Thrso2Kg9RdvrhrNj1cl2hpwMzJo
-                MQdh/iBcWu+AH1K0QdCWNCTZTwrxr9SuVfrHY63cfppcydHPARK/HfmqmIs5HjUS
-                snJTazLhya6V7xNP1wOfmvoEQDp70769Q7BQzw93k164miscg4F1GeI1H1sXxA==
-                -----END RSA PRIVATE KEY-----"
+          key: ${{secrets.KEY}}
           port: '22'
           overwrite: true
           source: "./*"
-          target: /var/www/core-crm.visionenhancingsolutions.app/public
+          target: /var/www/core-crm.visionenhancingsolutions.app
           tar_tmp_path: "/var/www/github-tmp"
       - name: Setup and Configure Laravel Installation
         uses: appleboy/ssh-action@master
         with:
           host: ${{secrets.HOST}}
           username: ${{secrets.USER}}
-          key: "-----BEGIN RSA PRIVATE KEY-----
-                MIIJKgIBAAKCAgEA5g8X+wQLNWtwbHAFVso3zJXThXnQZzFHRnPt4nbDK1C/pThm
-                /Qih3b+uQpTOKErBYhecCsxAzs2zt2pIRcKH9WNiJDcJTpQd1IgIIEVeBGPgaMbq
-                Dnycc01+v8VmDGUEoSFaKsYTrfIBrSmKBa8Srl379CEARIHV/nPHJvScCc1AGv7j
-                pWbBiLAnFE7oigZdkHhqzVMqiUWDEnqxrYLpaV/VG7UHYA+QlC6XXJJcMJsCpD8O
-                aR/wk5bZq99nqye8xl2/FlkA2fAFUJse0RsLPwKM39tYYKWG/z5OtNuQxD4xm2Eo
-                8vto9l8wBW+xt3IjE9db7lKPruQBk0ksmgbYh2CFEGU0kzm2PeKavu/wptr4L68R
-                Jway0ncHsJ9XhohDKBT153dBoweFf6BE5bGGlMzEekKRNCkdpWJ7cN6cBkBwLcdd
-                GZxiGCa5LX7Mevw3ut1SGTE+3YTwxUdzYx0yxXjmNmovMVzXfb1DLu4kNo9W8Pr6
-                jOl26bi10KtURwZ+Q7ii5+XKYKI2vT9QO1VWTWmtVzzYrh2y1xDolVdi71qzLZhR
-                WJV4ocEDWT9lXJajF9RPCQC80BvvyxQ/Gtb14wybD9ro2+dGYmj0g2/dyyIhT7/m
-                VNFx1xohSC7pf2Ak3yzdDZUewc25UcT9810dMwoGRJPs1YT97nhXImaWO0kCAwEA
-                AQKCAgEA3mufUqcRMx9hfOU8tDEji18bNkOUMgBZmYrBZZ5OiNUzw8fpAh/TZrFI
-                B8UYH6pOlsieq23YBlintN9DanZtvdfM7ZhsHhVjVbQCrziBchshvgr6BPGCzJMS
-                xNNTGw6bUDEPnKUOJ7D+3+x2LZKarAvfaKJzQMiKHMzQsR/ysCNJJBBkBOh4me88
-                iQzVE4Sd9uwEzefnCvoyg64tk8QqaB8nyPbXX48Mx8bXvb8e9DsZbbQs+YPQstA4
-                OEvwTXBIuTuvYCrCgPHmIY0nWSEdWVjc3ByTsDS4dJNHwuE4cBJ1IXTpAyn/y5ox
-                sj/PgL0PnsIqdhpKIdr8jupC/dM6iKppeznAUlgffv5Vw2L+bDgxoz9IWZUB4MLP
-                ZzDVvW7f1VurtPtMHtwmbo+EvmX664Ke23ixC6ll9Tt8Vw6DywAvaUvmlS3zp4b/
-                35MelVDMRJxpP2E7AkqszMSxY/wDvbM34EbECcp5JTeG/84F3O5oLlR1kZSsJxih
-                rrcvKu2X7DfPesO3TCyFXb3SEjA/drZ9z3Mw8kF7VQpRsBLgEDYgqnBS+Dgek3/6
-                LPwhYShJgB62KBGgpfbIIwCcTikR03Tdi8hq/qSXDzb7OgkhOeOpeKNjc3LtCrqa
-                5Tz112Bnz4vtu81x+gNqYvf0Ym3MhWtoD4fz8KCNLX427At6WxECggEBAOzTvh5f
-                yJAe80ETnI3iuUxOHBauUpGw1Kzfw83Mxme3eP7mLsL4o5AfojB9U1KONPJzzoaU
-                S6MH80x+lkjqLB8scAxAbqAdNDlKaDcifSOY1yX2qmb0Q6RvepQqVKUB44DQJ0EI
-                qZSdezlVBdAkqjO08MYecjfrs2X7WeOgEpSjEqfHK84jHHDGhGytfFmknEYeKTyg
-                B62ZXUTsB9TJZCb6eIYzNkhv0SuUlT7vLdFyF0hGNHd81C1puTmlf/L5okFYNVtN
-                yTQwnfASqxeaAAEMtKg7Jl0dhSUECoc15vEXaZVdI6aE/gIWvLU5E/3wPZXK9pN+
-                jiE6pWZCDCrkCp0CggEBAPivFJmWWQnIt28Y6joxdCzFg0Eh6xkB4yMFx7gastsu
-                FJbwntBQBPbWTw8th7OZD5GtKGvKA8Ype5FaZ94x+STINr/9OcTWGB0o3MIldF0t
-                hiSsVVaSCUZDwnlnHzsx7ieoqj4ZMOR+OmovNGfiobno35xH4VPrBphyAdU+WxNO
-                Bd8kpwiJyNJyogtsaE76ouvO/jlNNrNXLHdTizNqqMfVMo9LO+62qPhROQqIYh3D
-                3/wsSw1j8d2R7dPEPVjbNo6YbekRTy9kLuUEHoYocb/P15GfN/riAhj4P4Ss7nrc
-                mo7T9T+Q380vWae0YNoRGpO0N1bgQShSd4I7gmpszZ0CggEBAOhkp606pJ74IA/9
-                5KQ+lUJRa7K+APxCH5A8S/HJPfBM1Aida8mbHzWwNQGMGZVrQn2gMktRfh9PD+pC
-                VcrbL8yvWIxNNcEcp0CIyVdBGrcxpf303SYGD9JuKkT2fPUms06V888XZwEUv/R0
-                gC3NrM7sgVCIU+CYBATQ71Y0n8cHdqj5Av1W6vOneg8C9oEozMjpk+GPz7kEQ8f8
-                LXsa3JJ7OoXF/0B5qTIwrXuCTN24LSyY56dQ8QxXMJFm2/VcDWI94q3j2MrD4lfQ
-                md+hGNvu0eA7mtvIufymyIYB2MtABDWzneYrnu4Bzc+vYPTRKD2zWt9FUsc8u01r
-                BnGYMOkCggEAAtSrXVwyw0O/osob0HHDqsbMya8DKBO3bCyiq1vScWBC57zxcdmX
-                VN/3omqYQtkZLkVUUnXIOTc7qtnmmMbk2SBWTzUotS7is2JFsQgQHQdpoX08s3GS
-                HXSkABHGbzwQQ+9NkMtknRU6wP6skAoqYR1ffj3rOLNSLeYOU0kUbFHVC0c1h4lZ
-                +dtIMO0Y+t0rgZenmSth1gTGAs22pe0u4qdwneTzV7JIlhsGlTIcO86A/DPc3tgm
-                ZqlElcaEFEDajCD8D00dI6L2TbEQT+Kh+Nb60zOGxZpQ/8vDnVUCme9s6vdKsWCK
-                y6EgWiJZf+H19Xx1rM18sGLP7XGT+HYomQKCAQEAppKGdxzGyDzaZvsMsUqCDrci
-                LxFUgbg6m4v+bUQZXcM1KSBgA3qeFOvVJq+5E+mvTR8yY4d50BjeRCCuEzx2rXE0
-                m9/6Ff9tRYgcrHTMYGCFdQ52GfUOfSsi3mbP1+IEOgmVGjFrxS+rNFtV2DwN6MJB
-                hW9o8PVQHKu5pEXSe+53hvAh0zwBLfxTj+0/Thrso2Kg9RdvrhrNj1cl2hpwMzJo
-                MQdh/iBcWu+AH1K0QdCWNCTZTwrxr9SuVfrHY63cfppcydHPARK/HfmqmIs5HjUS
-                snJTazLhya6V7xNP1wOfmvoEQDp70769Q7BQzw93k164miscg4F1GeI1H1sXxA==
-                -----END RSA PRIVATE KEY-----"
+          key:  ${{secrets.KEY}}
           port: '22'
           script: |
-            cd /var/www/core-crm.visionenhancingsolutions.app/public/
+            cd /var/core-crm.visionenhancingsolutions.app/
             touch .env
 
-            # Dorcas Hub (Business) ENV
+            # Dorcas Core (Business) ENV
 
-            INSTALLED_HUB=false
+            echo INSTALLED_CORE=false >> .env
+
             # Base Laravel Settings
-            echo   INSTALLED_HUB = false >> .env
             echo APP_NAME=DorcasCoreBase >> .env
             echo APP_ENV=local >> .env
             echo APP_KEY=6J69gbI7jAIinBXU2D9TXTnLOF2cMe8j >> .env
             echo APP_DEBUG=true >> .env
             echo APP_LOG_LEVEL=debug >> .env
             echo APP_URL=https://core-crm.visionenhancingsolutions.app >> .env
-            echo  APP_URL_STATIC=https://core-crm.visionenhancingsolutions.app >> .env
+            echo APP_URL_STATIC=https://core-crm.visionenhancingsolutions.app >> .env
             echo APP_SITE_URL=https://core-crm.visionenhancingsolutions.app >> .env
+
 
             # Base Dorcas Settings
             echo DORCAS_EDITION=community >> .env
             echo  DORCAS_HOST_API=https://core-crm.visionenhancingsolutions.app >> .env
-            echo  DORCAS_HOST_HUB=https://crm.visionenhancingsolutions.app >> .env
+            echo  DORCAS_HOST_HUB=https://core-crm.visionenhancingsolutions.app >> .env
 
 
             # DORCAS_BASE_DOMAIN refers to the primary installation domain (usually hub domain)
             echo DORCAS_BASE_DOMAIN=crm.visionenhancingsolutions.app >> .env
             echo  ADMINISTRATOR_EMAIL=ifeoluwa.olawoye@gmail.com >> .env
-            echo  DEPLOY_ENV=staging >> .env
-            echo  DORCAS_CURL_SSL_VERIFY=false >> .env
-            echo  STANDARD_HOST=core-crm.visionenhancingsolutions.app >> .env
+            echo DEPLOY_ENV=staging >> .env
+            echo DORCAS_CURL_SSL_VERIFY=false >> .env
+            echo STANDARD_HOST=core-crm.visionenhancingsolutions.app >> .env
             echo DORCAS_BASE_URL=https://core-crm.visionenhancingsolutions.app >> .env
             echo DORCAS_ENV=production >> .env
 
+            echo DORCAS_PARTNER_NAME = "Sample Community" >> .env
+            echo DORCAS_PARTNER_SLUG = "community" >> .env
+            echo DORCAS_PARTNER_LOGO = "https://dorcas-s3.s3.eu-west-1.amazonaws.com/images/logo_main.png" >> .env
+            echo DORCAS_PARENT_DOMAIN = "core-crm.visionenhancingsolutions.app" >> .env
+
+
             # Database Settings
-            echo DB_CONNECTION = mysql >> .env
-            echo  DB_PORT=3306 >> .env
-            echo DB_DATABASE=${{secrets.DB_NAME}} >> .env
-            echo  DB_USERNAME = ${{secrets.DB_USER}} >> .env
-            echo  DB_PASSWORD=${{secrets.DB_PASSWORD}} >> .env
+            echo DB_CONNECTION=mysql >> .env
+            echo DB_HOST=localhost >> .env
+            echo DB_PORT=3306 >> .env
+            echo  DB_DATABASE=visionopticals_core >> .env
+            echo  DB_USERNAME= ${{secrets.DB_USER}} >> .env
+            echo  DB_PASSWORD= ${{secrets.DB_PASSWORD}} >> .env
+
+            echo  DB_HOST= ${{secrets.DB_HOST}} >> .env
+            echo DB_HUB_PORT=3306 >> .env
+            echo DB_HUB_DATABASE= ${{secrets.DB_NAME}} >> .env
+            echo DB_HUB_USERNAME= ${{secrets.DB_USER}} >> .env
+            echo DB_HUB_PASSWORD= ${{secrets.DB_PASSWORD}} >> .env
+
+            # Other Laravel Settings
+
+            echo SESSION_DRIVER=file >> .env
+
             set -e
 
             echo "Deployment started ..."
@@ -243,18 +112,15 @@ jobs:
 
             php artisan optimize:clear
 
-            sudo chown -R $USER:www-data /var/www/core-crm.visionenhancingsolutions.app/public/storage/
-            sudo chown -R $USER:www-data /var/www/core-crm.visionenhancingsolutions.app/public/bootstrap/cache
-
-            sudo chmod -R 775 /var/www/core-crm.visionenhancingsolutions.app/public/storage/
-            sudo chmod -R 775 /var/www/core-crm.visionenhancingsolutions.app/public/bootstrap/cache
-
-            sudo chmod -R u=rwx,g=rwx,o=rw /var/www/core-crm.visionenhancingsolutions.app/public/storage/logs
-            touch /var/www/core-crm.visionenhancingsolutions.app/public/storage/logs/lumen.log && > /var/www/core-crm.visionenhancingsolutions.app/public/storage/logs/lumen.log
-
-            sudo chown $USER:www-data /var/www/core-crm.visionenhancingsolutions.app/public/storage/logs/lumen.log
-            sudo chmod u=rwx,g=rw,o=rw /var/www/core-crm.visionenhancingsolutions.app/public/storage/logs/lumen.log
-            sudo chmod u=rwx,g=rx,o=x /var/www/core-crm.visionenhancingsolutions.app/public/artisan
+            sudo chown -R $USER:www-data ${{ secrets.PATH }}/storage/
+            sudo chown -R $USER:www-data ${{ secrets.PATH}}/bootstrap/cache
+            sudo chmod -R 775 ${{ secrets.PATH }}/storage/
+            sudo chmod -R 775 ${{ secrets.PATH }}/bootstrap/cache
+            sudo chmod -R u=rwx,g=rwx,o=rw ${{ secrets.PATH }}/storage/logs
+            touch ${{ secrets.PATH }}/storage/logs/laravel.log && > ${{ secrets.PATH }}/storage/logs/laravel.log
+            sudo chown $USER:www-data ${{ secrets.PATH}}/storage/logs/laravel.log
+            sudo chmod u=rwx,g=rw,o=rw ${{ secrets.PATH}}/storage/logs/laravel.log
+            sudo chmod u=rwx,g=rx,o=x ${{ secrets.PATH }}/artisan
             find "${{ secrets.PATH }}" -type f -name '*.php' -exec chmod 644 {} \;
             # php artisan migrate --force
 
