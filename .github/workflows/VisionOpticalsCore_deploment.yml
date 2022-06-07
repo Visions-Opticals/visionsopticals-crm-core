@@ -113,9 +113,9 @@ jobs:
             # php artisan optimize:clear
 
             sudo chown -R $USER:www-data /var/www/core-crm.visionenhancingsolutions.app/storage/
-            sudo chown -R $USER:www-data /var/www/core-crm.visionenhancingsolutions.app/bootstrap/cache
+           
             sudo chmod -R 775 /var/www/core-crm.visionenhancingsolutions.app/storage/
-            sudo chmod -R 775 /var/www/core-crm.visionenhancingsolutions.app/bootstrap/cache
+
             sudo chmod -R u=rwx,g=rwx,o=rw /var/www/core-crm.visionenhancingsolutions.app/storage/logs
             touch /var/www/core-crm.visionenhancingsolutions.app/storage/logs/lumen.log && > /var/www/core-crm.visionenhancingsolutions.app/storage/logs/lumen.log
             sudo chown $USER:www-data /var/www/core-crm.visionenhancingsolutions.app/storage/logs/lumen.log
