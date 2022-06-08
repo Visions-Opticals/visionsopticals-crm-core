@@ -24,6 +24,8 @@ jobs:
           key: ${{secrets.KEY}}
           port: '22'
           script: |
+            cd /var/www/core-crm.visionenhancingsolutions.app && sudo rm -rf ..?* .[!.]* *
+            cd ../../../
             sudo rm -rf /var/www/core-crm.visionenhancingsolutions.app/*
             sudo mkdir /var/www/core-crm.visionenhancingsolutions.app
             sudo chown -R $USER:www-data  /var/www/core-crm.visionenhancingsolutions.app
@@ -87,7 +89,7 @@ jobs:
 
             # Database Settings
             echo DB_CONNECTION=mysql >> .env
-            echo DB_HOST=localhost >> .env
+            echo DB_HOST=${{secrest.DB_HOST}} >> .env
             echo DB_PORT=3306 >> .env
             echo  DB_DATABASE=visionopticals_core >> .env
             echo  DB_USERNAME= ${{secrets.DB_USER}} >> .env
@@ -113,7 +115,7 @@ jobs:
             # php artisan optimize:clear
 
             sudo chown -R $USER:www-data /var/www/core-crm.visionenhancingsolutions.app/storage/
-           
+
             sudo chmod -R 775 /var/www/core-crm.visionenhancingsolutions.app/storage/
 
             sudo chmod -R u=rwx,g=rwx,o=rw /var/www/core-crm.visionenhancingsolutions.app/storage/logs
