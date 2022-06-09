@@ -95,7 +95,7 @@ jobs:
             echo  DB_USERNAME= ${{secrets.DB_USER}} >> .env
             echo  DB_PASSWORD= "${{secrets.DB_PASSWORD}}" >> .env
 
-            echo  DB_HOST= ${{secrets.DB_HOST}} >> .env
+            echo  DB_HUB_HOST= ${{secrets.DB_HOST}} >> .env
             echo DB_HUB_PORT=3306 >> .env
             echo DB_HUB_DATABASE= ${{secrets.DB_NAME}} >> .env
             echo DB_HUB_USERNAME= ${{secrets.DB_USER}} >> .env
@@ -131,7 +131,7 @@ jobs:
 
              php artisan passport:install
 
-             php artisan migrate --force
+             # php artisan migrate --force
 
 
             echo "Deployment finished!"
