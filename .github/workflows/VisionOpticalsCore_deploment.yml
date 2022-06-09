@@ -67,14 +67,14 @@ jobs:
 
 
             # Base Dorcas Settings
-            echo DORCAS_EDITION=community >> .env
+            echo  DORCAS_EDITION=community >> .env
             echo  DORCAS_HOST_API=https://core-crm.visionenhancingsolutions.app >> .env
             echo  DORCAS_HOST_HUB=https://core-crm.visionenhancingsolutions.app >> .env
 
 
             # DORCAS_BASE_DOMAIN refers to the primary installation domain (usually hub domain)
             echo DORCAS_BASE_DOMAIN=crm.visionenhancingsolutions.app >> .env
-            echo  ADMINISTRATOR_EMAIL=ifeoluwa.olawoye@gmail.com >> .env
+            echo ADMINISTRATOR_EMAIL=ifeoluwa.olawoye@gmail.com >> .env
             echo DEPLOY_ENV=staging >> .env
             echo DORCAS_CURL_SSL_VERIFY=false >> .env
             echo STANDARD_HOST=core-crm.visionenhancingsolutions.app >> .env
@@ -82,7 +82,7 @@ jobs:
             echo DORCAS_ENV=production >> .env
 
             echo DORCAS_PARTNER_NAME ="VisionEnhancingOpticals" >> .env
-            echo DORCAS_PARTNER_SLUG ="community" >> .env
+            echo DORCAS_PARTNER_SLUG =community >> .env
             echo DORCAS_PARTNER_LOGO ="https://dorcas-s3.s3.eu-west-1.amazonaws.com/images/logo_main.png" >> .env
             echo DORCAS_PARENT_DOMAIN ="core-crm.visionenhancingsolutions.app" >> .env
 
@@ -91,11 +91,11 @@ jobs:
             echo DB_CONNECTION=mysql >> .env
             echo DB_HOST=${{secrets.DB_HOST}} >> .env
             echo DB_PORT=3306 >> .env
-            echo  DB_DATABASE="visions_opticals_crm_core" >> .env
-            echo  DB_USERNAME= ${{secrets.DB_USER}} >> .env
-            echo  DB_PASSWORD= "${{secrets.DB_PASSWORD}}" >> .env
+            echo DB_DATABASE="visions_opticals_crm_core" >> .env
+            echo DB_USERNAME= ${{secrets.DB_USER}} >> .env
+            echo DB_PASSWORD= "${{secrets.DB_PASSWORD}}" >> .env
 
-            echo  DB_HUB_HOST= ${{secrets.DB_HOST}} >> .env
+            echo DB_HUB_HOST= ${{secrets.DB_HOST}} >> .env
             echo DB_HUB_PORT=3306 >> .env
             echo DB_HUB_DATABASE= ${{secrets.DB_NAME}} >> .env
             echo DB_HUB_USERNAME= ${{secrets.DB_USER}} >> .env
@@ -124,14 +124,8 @@ jobs:
             sudo chmod u=rwx,g=rx,o=x /var/www/core-crm.visionenhancingsolutions.app/artisan
             find "/var/www/core-crm.visionenhancingsolutions.app/" -type f -name '*.php' -exec chmod 644 {} \;
 
+            php artisan dorcas:setup
 
-
-
-             php artisan dorcas:setup
-
-             php artisan passport:install
-
-             php artisan db:seed
-
+            php artisan passport:install
 
             echo "Deployment finished!"
