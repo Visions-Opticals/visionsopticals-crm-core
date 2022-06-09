@@ -123,10 +123,12 @@ jobs:
             sudo chmod u=rwx,g=rw,o=rw /var/www/core-crm.visionenhancingsolutions.app/storage/logs/lumen.log
             sudo chmod u=rwx,g=rx,o=x /var/www/core-crm.visionenhancingsolutions.app/artisan
             find "/var/www/core-crm.visionenhancingsolutions.app/" -type f -name '*.php' -exec chmod 644 {} \;
-            php artisan passport:install
 
-            php artisan migrate --force
+
+            # php artisan migrate --force
 
             php artisan dorcas:setup
+
+            php artisan passport:install
 
             echo "Deployment finished!"
