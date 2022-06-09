@@ -91,7 +91,7 @@ jobs:
             echo DB_CONNECTION=mysql >> .env
             echo DB_HOST=${{secrets.DB_HOST}} >> .env
             echo DB_PORT=3306 >> .env
-            echo  DB_DATABASE=visionopticals_core >> .env
+            echo  DB_DATABASE="visions_opticals_crm_core" >> .env
             echo  DB_USERNAME= ${{secrets.DB_USER}} >> .env
             echo  DB_PASSWORD= ${{secrets.DB_PASSWORD}} >> .env
 
@@ -109,10 +109,7 @@ jobs:
 
             echo "Deployment started ..."
 
-
             composer update
-
-            # php artisan optimize:clear
 
             sudo chown -R $USER:www-data /var/www/core-crm.visionenhancingsolutions.app/storage/
 
