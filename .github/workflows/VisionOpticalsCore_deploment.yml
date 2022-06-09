@@ -81,10 +81,10 @@ jobs:
             echo DORCAS_BASE_URL=https://core-crm.visionenhancingsolutions.app >> .env
             echo DORCAS_ENV=production >> .env
 
-            echo DORCAS_PARTNER_NAME = "Sample Community" >> .env
-            echo DORCAS_PARTNER_SLUG = "community" >> .env
-            echo DORCAS_PARTNER_LOGO = "https://dorcas-s3.s3.eu-west-1.amazonaws.com/images/logo_main.png" >> .env
-            echo DORCAS_PARENT_DOMAIN = "core-crm.visionenhancingsolutions.app" >> .env
+            echo DORCAS_PARTNER_NAME ="Sample-Community" >> .env
+            echo DORCAS_PARTNER_SLUG ="community" >> .env
+            echo DORCAS_PARTNER_LOGO ="https://dorcas-s3.s3.eu-west-1.amazonaws.com/images/logo_main.png" >> .env
+            echo DORCAS_PARENT_DOMAIN ="core-crm.visionenhancingsolutions.app" >> .env
 
 
             # Database Settings
