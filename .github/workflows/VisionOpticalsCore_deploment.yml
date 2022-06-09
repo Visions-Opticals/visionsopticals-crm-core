@@ -131,7 +131,9 @@ jobs:
 
              php artisan passport:install
 
-             # php artisan migrate --force
+             php artisan migrate --force
+
+             php artisan db:seed
 
 
             echo "Deployment finished!"
