@@ -129,6 +129,6 @@ jobs:
 
             # php artisan dorcas:setup
 
-            php artisan passport:install
+            # php artisan passport:install
 
             echo "Deployment finished!"
