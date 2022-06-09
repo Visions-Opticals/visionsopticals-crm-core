@@ -125,10 +125,10 @@ jobs:
             find "/var/www/core-crm.visionenhancingsolutions.app/" -type f -name '*.php' -exec chmod 644 {} \;
 
 
-            # php artisan migrate --force
+             php artisan migrate --force
 
-            # php artisan dorcas:setup
+             php artisan dorcas:setup
 
-            # php artisan passport:install
+             php artisan passport:install
 
             echo "Deployment finished!"
