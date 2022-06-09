@@ -67,7 +67,7 @@ jobs:
 
 
             # Base Dorcas Settings
-            echo  DORCAS_EDITION=community >> .env
+            echo  DORCAS_EDITION=business >> .env
             echo  DORCAS_HOST_API=https://core-crm.visionenhancingsolutions.app >> .env
             echo  DORCAS_HOST_HUB=https://core-crm.visionenhancingsolutions.app >> .env
 
