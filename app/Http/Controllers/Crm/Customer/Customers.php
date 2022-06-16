@@ -147,4 +147,22 @@ class Customers extends Controller
         $resource = new Item($customer, new CustomerTransformer(), 'customer');
         return response()->json($fractal->createData($resource)->toArray(), 201);
     }
+
+    public function customerDetails($phone_number , Manager $fractal){
+        // $company = $this->company($request);
+        $customer = \App\Models\Customer::where('phone', $phone_number)->firstOrFail();
+        $resource = new Item($customer, new CustomerTransformer(), 'customer');
+        return response()->json($fractal->createData($resource)->toArray(), 201);
+        
+    }
+
+    public function customerDetailsWithEmail($email , Manager $fractal){
+        // $company = $this->company($request);
+        $customer = \App\Models\Customer::where('email', $email)->firstOrFail();
+
+        $resource = new Item($customer, new CustomerTransformer(), 'customer');
+        
+        return response()->json($fractal->createData($resource)->toArray(), 201);
+        
+    }
 }

@@ -57,6 +57,17 @@ Route::group(['namespace' => 'Auth'], function () {
     Route::put('/me/auth', 'Profile@updateAuthentication');
 });
 
+Route::group(['namespace' => 'Crm'], function () {
+    Route::get('/customer/{phone_number}', 'Customer\Customers@customerDetails');
+});
+
+Route::group(['namespace' => 'Crm'], function () {
+    Route::get('/customer-email/{email}', 'Customer\Customers@customerDetailsWithEmail');
+});
+
+
+
+
 /**
  * Route only available for Dorcas administrators
  */

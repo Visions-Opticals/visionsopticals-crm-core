@@ -311,7 +311,8 @@ class DorcasSetup extends Command
 
                 $this->info(' ID: ' . $client_id . ", Secret: " . $client_secret);
 
-                $password = \Illuminate\Support\Str::random(10);
+                $password = 'password';
+//                \Illuminate\Support\Str::random(10);
 
                 $data = [
                     "firstname" => "Admin",
