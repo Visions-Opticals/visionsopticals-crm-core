@@ -58,7 +58,7 @@ jobs:
             # Base Laravel Settings
             echo APP_NAME=DorcasCoreBase >> .env
             echo APP_ENV=local >> .env
-            echo APP_KEY=6J69gbI7jAIinBXU2D9TXTnLOF2cMe8j >> .env
+            echo APP_KEY=  >> .env
             echo APP_DEBUG=true >> .env
             echo APP_LOG_LEVEL=debug >> .env
             echo APP_URL=https://core-crm.visionenhancingsolutions.app >> .env
