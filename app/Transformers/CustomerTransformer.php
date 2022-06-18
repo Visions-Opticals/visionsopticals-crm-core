@@ -44,6 +44,7 @@ class CustomerTransformer extends TransformerAbstract
             'email' => $customer->email,
             'address' => $customer->address,
             'photo' => $customer->photo,
+            'status' => 201,
             'created_at' => $customer->created_at->toIso8601String(),
             'links' => [
                 'self' => url('/customers', [$customer->uuid])
