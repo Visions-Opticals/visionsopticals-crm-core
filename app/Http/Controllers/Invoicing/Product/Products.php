@@ -73,6 +73,7 @@ class Products extends Controller
         }
         # get the products
         $resource = new Collection($paginator->getCollection(), new ProductTransformer(), 'product');
+//        dd($resource);
         # create the resource
         if (!empty($search)) {
             $pagingAppends['search'] = $search;
@@ -120,6 +121,8 @@ class Products extends Controller
             'product_variant_type' => $request->input('product_variant_type',''),
             'unit_price' => $request->input('default_price', 0.00),
         ]);
+
+
         # create the model
         $productPrices = collect([]);
         # our price container
@@ -153,4 +156,6 @@ class Products extends Controller
         $resource = new Item($product, new ProductTransformer(), 'product');
         return response()->json($fractal->createData($resource)->toArray(), 201);
     }
+
+
 }

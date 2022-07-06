@@ -38,6 +38,8 @@ class ProductTransformer extends TransformerAbstract
             'embeds' => $this->getEmbeds(),
             'id' => $product->uuid,
             'name' => $name,
+            'barcode' => $product->barcode,
+            'barcode_img' => $product->barcode_img,
             'description' => $product->description,
             'default_currency' => 'NGN',
             'default_unit_price' => [

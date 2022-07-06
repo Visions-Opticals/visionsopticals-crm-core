@@ -84,57 +84,75 @@ class Product extends Controller
     {
         $company = $this->company();
         # get the company
-        $this->validate($request, [
-            'name' => 'nullable|max:80',
-            'description' => 'nullable',
-            'default_price' => 'nullable|numeric',
-            'prices' => 'nullable|array',
-            'prices.*.currency' => 'required_with:prices|string|size:3',
-            'prices.*.price' => 'required_with:prices|numeric',
-        ]);
-        # validate the request
-        $product = $company->products()->where('uuid', $id)->firstOrFail();
-        # try to get the product
-        $this->updateModelAttributes($product, $request);
-        # update the attributes
-        $productPrices = collect([]);
-        # our price container
-        $prices = $request->input('prices', []);
-        # we check if there are alternate prices
-        if (!empty($prices)) {
-            # we have alternate prices
-            $isoCurrencies = new ISOCurrencies();
-            # our currency context
-            foreach ($prices as $price) {
-                # we loop through the array of alternate prices
-                $currency = new Currency($price['currency']);
-                if (!$currency->isAvailableWithin($isoCurrencies)) {
-                    # this currency is not available
-                    throw new \UnexpectedValueException(
-                        'One of the product prices your specified is not a valid ISO currency. You provided a '.
-                        'currency of: '.$price['currency']
-                    );
+
+
+        if(empty($request->barcode)) {
+
+            $this->validate($request, [
+                'name' => 'nullable|max:80',
+                'description' => 'nullable',
+                'default_price' => 'nullable|numeric',
+                'prices' => 'nullable|array',
+                'prices.*.currency' => 'required_with:prices|string|size:3',
+                'prices.*.price' => 'required_with:prices|numeric'
+            ]);
+
+            # validate the request
+            $product = $company->products()->where('uuid', $id)->firstOrFail();
+            # try to get the product
+            $this->updateModelAttributes($product, $request);
+            # update the attributes
+            $productPrices = collect([]);
+            # our price container
+            $prices = $request->input('prices', []);
+            # we check if there are alternate prices
+            if (!empty($prices)) {
+                # we have alternate prices
+                $isoCurrencies = new ISOCurrencies();
+                # our currency context
+                foreach ($prices as $price) {
+                    # we loop through the array of alternate prices
+                    $currency = new Currency($price['currency']);
+                    if (!$currency->isAvailableWithin($isoCurrencies)) {
+                        # this currency is not available
+                        throw new \UnexpectedValueException(
+                            'One of the product prices your specified is not a valid ISO currency. You provided a ' .
+                            'currency of: ' . $price['currency']
+                        );
+                    }
+                    $productPrices = $productPrices->push(['currency' => strtoupper($price['currency']), 'unit_price' => $price['price']]);
+                    # add the price to the array
                 }
-                $productPrices = $productPrices->push(['currency' => strtoupper($price['currency']), 'unit_price' => $price['price']]);
-                # add the price to the array
             }
+            $productPrices = $productPrices->unique('currency')->all();
+            # remove duplicate entries
+            DB::transaction(function ($query) use (&$product, $productPrices) {
+                $product->saveOrFail();
+                # save the changes
+                $currencies = collect($productPrices)->map(function ($c) {
+                    return $c['currency'];
+                });
+                $product->prices()->whereNotIn('currency', $currencies)->delete();
+                # remove the current prices based on the currencies not present
+                foreach ($productPrices as $priceEntry) {
+                    ProductPrice::updateOrCreate(
+                        ['product_id' => $product->id, 'currency' => $priceEntry['currency']],
+                        ['unit_price' => $priceEntry['unit_price']]
+                    );
+                    # update the price
+                }
+            });
+        }else{
+
+            $this->validate($request, [
+                'barcode' => 'required|max:25|unique:products'
+            ]);
+
+            $product = $company->products()->where('uuid', $id)->firstOrFail();
+            $generator = new \Picqer\Barcode\BarcodeGeneratorHTML();
+            $barcode = $generator->getBarcode($request->barcode, $generator::TYPE_CODE_128);
+            $product->update(['barcode' => $request->barcode , 'barcode_img' => $barcode]);
         }
-        $productPrices = $productPrices->unique('currency')->all();
-        # remove duplicate entries
-        DB::transaction(function ($query) use (&$product, $productPrices) {
-            $product->saveOrFail();
-            # save the changes
-            $currencies = collect($productPrices)->map(function ($c) { return $c['currency']; });
-            $product->prices()->whereNotIn('currency', $currencies)->delete();
-            # remove the current prices based on the currencies not present
-            foreach ($productPrices as $priceEntry) {
-                ProductPrice::updateOrCreate(
-                    ['product_id' => $product->id, 'currency' => $priceEntry['currency']],
-                    ['unit_price' => $priceEntry['unit_price']]
-                );
-                # update the price
-            }
-        });
         # encapsulate it in a transaction
         $resource = new Item($product, new ProductTransformer(), 'product');
         return response()->json($fractal->createData($resource)->toArray(), 200);
@@ -358,6 +376,47 @@ class Product extends Controller
             throw new \RuntimeException('Failed while updating your stocks, lease try again later.');
         }
         $resource = new Item($stock, new ProductStockTransformer(), 'stock');
+        return response()->json($fractal->createData($resource)->toArray(), 201);
+    }
+
+    public function scanProductWithBarcode(Request $request ,Manager $fractal,string $id)
+    {
+        $company = $this->company();
+        # get the currently authenticated company
+        $this->validate($request, [
+            'action' => 'required|in:add,subtract',
+            'quantity' => 'sometimes|numeric|min:0',
+            'barcode' => 'required|min:25',
+            'comment' => 'nullable'
+        ]);
+        # validate the request
+//        $product = $company->products()->where('uuid', $id)->firstOrFail();
+        $product = $company->products()->where('barcode', $request->barcode)->firstOrFail();
+        # try to get the product
+        $stock = null;
+        # our stock model
+        try {
+            DB::transaction(function () use (&$stock, $product, $request) {
+                $stock = $product->stocks()->create($request->only(['action', 'quantity', 'comment']));
+                # add a new record
+                if ($request->action === 'add') {
+                    $product->increment('inventory', $request->quantity);
+                } else {
+                    if ($product->inventory > (int) $request->quantity) {
+                        $product->decrement('inventory', $request->quantity);
+                    } else {
+                        //stick default should be one if non is passed
+                        $product->update(['inventory' => 1]);
+                    }
+                }
+            });
+            # we make a transaction out of it
+        } catch (\Throwable $e) {
+            throw new \RuntimeException('Failed while updating your stocks, lease try again later.');
+        }
+
+        $resource = new Item($stock, new ProductStockTransformer(), 'stock');
+
         return response()->json($fractal->createData($resource)->toArray(), 201);
     }
 }

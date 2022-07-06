@@ -1844,6 +1844,8 @@ CREATE TABLE `products` (
   `uuid` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `company_id` int unsigned NOT NULL,
   `name` char(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `barcode` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+  `barcode_img` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
   `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `unit_price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
   `inventory` int unsigned NOT NULL DEFAULT '0',

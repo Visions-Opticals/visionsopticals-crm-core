@@ -11,8 +11,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/kingflamez/laravelrave" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/type-resolver" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-common" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/jakub-onderka/php-console-highlighter" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/jakub-onderka/php-console-color" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-docblock" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/hashing" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/filesystem" />
@@ -45,7 +43,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/nikic/php-parser" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/aws/aws-sdk-php" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/aws/aws-crt-php" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/dnoegel/php-xdg-base-dir" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bugsnag/bugsnag-laravel" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bugsnag/bugsnag-psr-logger" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bugsnag/bugsnag" />
@@ -59,7 +56,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/tinker" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/monolog/monolog" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/mockery/mockery" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/mashape/unirest-php" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/helpers" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/uri-interfaces" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/oauth2-server" />
@@ -91,7 +87,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/psr-http-message-bridge" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/error-handler" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/http-foundation" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/http-client-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/service-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpspec/prophecy" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phar-io/version" />
@@ -99,7 +94,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/myclabs/deep-copy" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-text-template" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/phpunit" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-token-stream" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-timer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-php73" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-iconv" />
@@ -123,7 +117,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/moneyphp/money" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-mbstring" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/console" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/debug" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/process" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/barryvdh/laravel-snappy" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/yabacon/paystack-php" />
@@ -160,6 +153,32 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/exporter" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/environment" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/version" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/voku/portable-ascii" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/graham-campbell/result-type" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/constant_time_encoding" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nette/schema" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/config" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nette/utils" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/stella-maris/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/event-dispatcher" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-intl-grapheme" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-php81" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/string" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/lines-of-code" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/type" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/cli-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/complexity" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/code-unit" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/serializable-closure" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-invoker" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/lcobucci/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/macroable" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/collections" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/illuminate/testing" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/brick/math" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ramsey/collection" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/dflydev/dot-access-data" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/picqer/php-barcode-generator" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

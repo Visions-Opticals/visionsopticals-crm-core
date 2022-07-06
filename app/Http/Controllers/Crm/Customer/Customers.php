@@ -138,6 +138,8 @@ class Customers extends Controller
             'lastname' => $request->input('lastname'),
             'phone' => $request->input('phone', null),
             'email' => $request->input('email', null),
+            // 'business_name' => $request->input('businessName', null),
+            // 'business_address' => $request->input('businessAddress', null),
         ]);
         # create the model
         if (!empty($contacts)) {
@@ -150,9 +152,11 @@ class Customers extends Controller
 
     public function customerDetails($phone_number , Manager $fractal){
         // $company = $this->company($request);
-        $customer = \App\Models\Customer::where('phone', $phone_number)->firstOrFail();
+        $customer = \App\Models\Customer::where('phone', $phone_number)->with('contacts')->firstOrFail();
         $resource = new Item($customer, new CustomerTransformer(), 'customer');
         return response()->json($fractal->createData($resource)->toArray(), 201);
+
+        // return response()->json(['success' => true , 'data' => compact('customer')]);
         
     }
 

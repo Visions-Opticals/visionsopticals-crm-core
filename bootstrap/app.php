@@ -14,11 +14,71 @@ $dorcasENV = ".env"; // $_SESSION['dorcasENV'] ?? '.env'; // session('dorcasENV'
 //$dorcasENV = Session::get('dorcasENV', '.env');
 
 try {
-    //(Dotenv\Dotenv::create(__DIR__ . '/../', $dorcasENV))->load();
-    (Dotenv\Dotenv::create(__DIR__ . '/../'))->load();
+//    (Dotenv\Dotenv::create(__DIR__ . '/../', $dorcasENV))->load();
+    //old implementation
+//    (Dotenv\Dotenv::create(__DIR__ . '/../'))->load();
+    //end of comment
+    //new implementation
+    (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
+        dirname(__DIR__)
+    ))->bootstrap();
+    //end of new implementation
 } catch (Dotenv\Exception\InvalidPathException $e) {
     //
 }
+
+
+//new implementation
+date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
+//end of new implementation
+
+/*
+|--------------------------------------------------------------------------
+| Create The Application
+|--------------------------------------------------------------------------
+|
+| Here we will load the environment and create the application instance
+| that serves as the central piece of this framework. We'll use this
+| application as an "IoC" container and router for this framework.
+|
+*/
+//new implementation
+
+$app = new Laravel\Lumen\Application(
+    dirname(__DIR__)
+);
+
+//end of new implementation
+
+//old implementation
+// $app->withFacades();
+
+// $app->withEloquent();
+//end of old implementation
+
+/*
+|--------------------------------------------------------------------------
+| Register Container Bindings
+|--------------------------------------------------------------------------
+|
+| Now we will register a few bindings in the service container. We will
+| register the exception handler and the console kernel. You may add
+| your own bindings here if you like or you can make another file.
+|
+*/
+
+
+//new implemetation
+$app->singleton(
+    Illuminate\Contracts\Debug\ExceptionHandler::class,
+    App\Exceptions\Handler::class
+);
+
+$app->singleton(
+    Illuminate\Contracts\Console\Kernel::class,
+    App\Console\Kernel::class
+);
+//end of new implementation
 
 
 /*
@@ -32,9 +92,9 @@ try {
 |
 */
 
-$app = new Laravel\Lumen\Application(
-    realpath(__DIR__ . '/../')
-);
+//$app = new Laravel\Lumen\Application(
+//    realpath(__DIR__ . '/../')
+//);
 
 
 
@@ -49,6 +109,9 @@ $app->register(\Illuminate\Redis\RedisServiceProvider::class);
 
 $app->alias('cache', 'Illuminate\Cache\CacheManager');
 $app->alias('auth', 'Illuminate\Auth\AuthManager');
+$app->alias('mail.manager', \Illuminate\Mail\MailManager::class);
+$app->alias('mail.manager', \Illuminate\Contracts\Mail\Factory::class);
+
 
 // use Illuminate\Support\Facades\Cache;
 // use Illuminate\Support\Facades\Storage;
@@ -59,7 +122,7 @@ $app->alias('auth', 'Illuminate\Auth\AuthManager');
 
 $app->withEloquent();
 
-$app->instance('path.config', app()->basePath() . DIRECTORY_SEPARATOR . 'config'); 
+$app->instance('path.config', app()->basePath() . DIRECTORY_SEPARATOR . 'config');
 
 
 
@@ -178,12 +241,16 @@ $app->register(\Fedeisas\LaravelMailCssInliner\LaravelMailCssInlinerServiceProvi
 $app->register(\Spatie\Permission\PermissionServiceProvider::class);
 //$app->register(\Illuminate\Redis\RedisServiceProvider::class);
 
+$app->register(\Illuminate\Queue\QueueServiceProvider::class);
+
 //$app->register(\Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class);
 //$app->register(Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class);
 
 
 
-$app->alias('mailer', \Illuminate\Contracts\Mail\Mailer::class);
+//$app->alias('mailer', \Illuminate\Contracts\Mail\Mailer::class);
+
+
 
 
 /*
@@ -202,5 +269,4 @@ $app->router->group([
 ], function ($router) {
     require __DIR__ . '/../routes/web.php';
 });
-
 return $app;

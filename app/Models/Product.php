@@ -15,6 +15,8 @@ class Product extends Model
         'uuid',
         'company_id',
         'name',
+        'barcode',
+        'barcode_img',
         'description',
         'unit_price',
         'inventory',

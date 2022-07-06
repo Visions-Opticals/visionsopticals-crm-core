@@ -13,6 +13,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -53,7 +54,7 @@ class Handler extends ExceptionHandler
      * @return void
      * @throws Exception
      */
-    public function report(Exception $e)
+    public function report(Throwable $e)
     {
         parent::report($e);
     }
@@ -65,7 +66,7 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $e)
+    public function render($request, Throwable $e)
     {
         $status = 500;
         # the status code

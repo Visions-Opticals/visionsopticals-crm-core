@@ -66,6 +66,14 @@ Route::group(['namespace' => 'Crm'], function () {
 });
 
 
+//Route::group(['namespace' => 'Invoicing'], function () {
+//    /**
+//     * Product Endpoints
+//     */
+//    Route::post('/product/{id}/scan/', 'Product\Product@scanProductWithBarcode');
+//
+//});
+
 
 
 /**
@@ -460,6 +468,8 @@ Route::group(['namespace' => 'Invoicing', 'middleware' => ['auth']], function ()
     Route::get('/products/{id}/stocks', 'Product\Product@stocks');
     Route::delete('/products/{id}/stocks', 'Product\Product@deleteStocks');
     Route::post('/products/{id}/stocks', 'Product\Product@stockQuantity');
+
+    Route::post('/product/{id}/scan/', 'Product\Product@scanProductWithBarcode');
 
     /**
      * Order Endpoints

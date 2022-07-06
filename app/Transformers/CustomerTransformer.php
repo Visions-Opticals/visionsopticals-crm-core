@@ -36,6 +36,7 @@ class CustomerTransformer extends TransformerAbstract
     public function transform(Customer $customer)
     {
         $resource = [
+            'status' => 201,
             'embeds' => $this->getEmbeds(),
             'id' => $customer->uuid,
             'firstname' => $customer->firstname,
