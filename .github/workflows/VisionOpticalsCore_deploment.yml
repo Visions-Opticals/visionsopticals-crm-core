@@ -107,7 +107,7 @@ jobs:
             echo AWS_BUCKET=maghic-app-test-local >> .env
             echo AWS_USE_PATH_STYLE_ENDPOINT=false >> .env
 
-            echo WHATSAPP_PROCESSOR_ENDPOINT=https://visionopticalsredesign.test/api/ >> .env
+            echo WHATSAPP_PROCESSOR_ENDPOINT=https://admin.visionenhancingsolutions.app/api/ >> .env
 
             # Other Laravel Settings
 
