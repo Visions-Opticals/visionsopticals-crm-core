@@ -74,7 +74,7 @@ jobs:
 
             # DORCAS_BASE_DOMAIN refers to the primary installation domain (usually hub domain)
             echo DORCAS_BASE_DOMAIN=crm.visionenhancingsolutions.app >> .env
-            echo ADMINISTRATOR_EMAIL=ifeoluwa.olawoye@gmail.com >> .env
+            echo ADMINISTRATOR_EMAIL=dev@hostville.website >> .env
             echo DEPLOY_ENV=staging >> .env
             echo DORCAS_CURL_SSL_VERIFY=false >> .env
             echo STANDARD_HOST=core-crm.visionenhancingsolutions.app >> .env
