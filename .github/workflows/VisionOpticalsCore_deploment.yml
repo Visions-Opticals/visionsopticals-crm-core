@@ -101,6 +101,14 @@ jobs:
             echo DB_HUB_USERNAME= ${{secrets.DB_USER}} >> .env
             echo DB_HUB_PASSWORD= "${{secrets.DB_PASSWORD}}" >> .env
 
+            echo AWS_ACCESS_KEY_ID=AKIAUGWBZ6CU5Z6HTTGA >> .env
+            echo AWS_SECRET_ACCESS_KEY=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 >> .env
+            echo AWS_DEFAULT_REGION=us-east-2 >> .env
+            echo AWS_BUCKET=maghic-app-test-local >> .env
+            echo AWS_USE_PATH_STYLE_ENDPOINT=false >> .env
+
+            echo WHATSAPP_PROCESSOR_ENDPOINT=https://visionopticalsredesign.test/api/ >> .env
+
             # Other Laravel Settings
 
             echo SESSION_DRIVER=file >> .env

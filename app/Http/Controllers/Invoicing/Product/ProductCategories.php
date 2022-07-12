@@ -9,6 +9,8 @@ use App\Models\Company;
 use App\Models\ProductCategory;
 use App\Transformers\ProductCategoryTransformer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
@@ -92,8 +94,26 @@ class ProductCategories extends Controller
             'slug' => $slug,
             'description' => $request->input('description')
         ]);
+
+
+
+        $baseUrl = env('WHATSAPP_PROCESSOR_ENDPOINT');
+
+        $url = $baseUrl . 'add_category_from_core';
+
+        $headers = [
+            "Accept" => "application/json",
+            "Content-Type" => "application/json"
+        ];
+
+        $response = Http::withHeaders($headers)->post($url ,[
+            'product_category' => $request->input('name'),
+            'category_uuid' => $category->uuid,
+        ]);
+
         # create the model
         $resource = new Item($category, new ProductCategoryTransformer(), 'category');
+
         return response()->json($fractal->createData($resource)->toArray(), 201);
     }
     
@@ -107,13 +127,30 @@ class ProductCategories extends Controller
      */
     public function delete(Request $request, Manager $fractal, string $id)
     {
+
         $company = $this->company($request);
         # retrieve the company
         $category = $company->productCategories()->withCount('products')->where('uuid', $id)->firstOrFail();
+
         # try to get the category
         if (!(clone $category)->delete()) {
             throw new DeletingFailedException('Failed while deleting the category');
         }
+        $resource = new Item($category, new ProductCategoryTransformer(), 'category');
+
+
+        $baseUrl = env('WHATSAPP_PROCESSOR_ENDPOINT');
+        $url = $baseUrl . 'delete_product_category';
+        $headers = [
+            "Accept" => "application/json",
+            "Content-Type" => "application/json"
+        ];
+
+        $response = Http::withHeaders($headers)->post($url ,[
+            'category_uuid' => $id,
+        ]);
+
+        # create the model
         $resource = new Item($category, new ProductCategoryTransformer(), 'category');
         # get the resource
         return response()->json($fractal->createData($resource)->toArray());
@@ -185,6 +222,22 @@ class ProductCategories extends Controller
         $this->updateModelAttributes($category, $request);
         # update the attributes
         $category->saveOrFail();
+
+
+
+        $baseUrl = env('WHATSAPP_PROCESSOR_ENDPOINT');
+        $url = $baseUrl . 'update_product_category';
+        $headers = [
+            "Accept" => "application/json",
+            "Content-Type" => "application/json"
+        ];
+
+        $response = Http::withHeaders($headers)->post($url ,[
+            'category_uuid' => $id,
+            'name' => $request->name,
+        ]);
+
+
         # commit the changes
         $resource = new Item($category, new ProductCategoryTransformer(), 'category');
         return response()->json($fractal->createData($resource)->toArray(), 200);

@@ -37,6 +37,7 @@ class ProductCategoryTransformer extends TransformerAbstract
             'embeds' => $this->getEmbeds(),
             'id' => $category->uuid,
             'name' => $category->name,
+            'category_id' => $category->id,
             'slug' => $category->slug,
             'description' => $category->description,
             'products_count' => $category->products()->count(),

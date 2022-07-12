@@ -7,11 +7,14 @@ use App\Exceptions\DeletingFailedException;
 use App\Exceptions\RecordNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\ProductCategory;
 use App\Models\ProductPrice;
+use App\Transformers\ProductCategoryTransformer;
 use App\Transformers\ProductStockTransformer;
 use App\Transformers\ProductTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
@@ -229,8 +232,25 @@ class Product extends Controller
             throw new RecordNotFoundException('Could not find the '.$term.' to be added.');
         }
         $product->categories()->attach($categories);
+
+        $baseUrl = env('WHATSAPP_PROCESSOR_ENDPOINT');
+
+        $url = $baseUrl . 'add_category_product';
+
+        $headers = [
+            "Accept" => "application/json",
+            "Content-Type" => "application/json"
+        ];
+
+        $response = Http::withHeaders($headers)->post($url ,[
+            'product_uuid' => $id,
+            'category_uuid' => $request->input('ids'),
+        ]);
+
         # attach the category
         $resource = new Item($product, new ProductTransformer(), 'product');
+
+
         return response()->json($fractal->createData($resource)->toArray(), 201);
     }
     
@@ -418,5 +438,15 @@ class Product extends Controller
         $resource = new Item($stock, new ProductStockTransformer(), 'stock');
 
         return response()->json($fractal->createData($resource)->toArray(), 201);
+    }
+
+
+    public function fetchCategories(Request $request, Manager $fractal)
+    {
+        $category = ProductCategory::get();
+
+        $resource = new Collection($category, new ProductCategoryTransformer(), 'category');
+
+        return response()->json($fractal->createData($resource)->toArray(), 200);
     }
 }

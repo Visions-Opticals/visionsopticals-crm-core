@@ -6,8 +6,11 @@ namespace App\Http\Controllers\Invoicing\Orders;
 use App\Exceptions\DeletingFailedException;
 use App\Exceptions\RecordNotFoundException;
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\CustomerOrder;
+use App\Models\PaymentTransaction;
 use App\Notifications\InvoicePaid;
+use App\Transformers\CustomerTransformer;
 use App\Transformers\OrderTransformer;
 use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -468,5 +471,61 @@ class Order extends Controller
             'webstore_url' => "https://" . $company->domainIssuances->first()->prefix . ".store.dorcas.io"
         ];
         return view('payment.payment-complete-response', $data);
+    }
+
+
+    public function addOrderFromWhatsappProcessor(Request $request ,Manager $fractal)
+    {
+
+        $this->validate($request, [
+            'email' => 'required|max:30',
+            'company_uuid' => 'required',
+            'reference' => 'required',
+            'amount' => 'required'
+        ]);
+
+        $company = Company::where('uuid',$request->company_id)->first();
+        $product = \App\Models\Product::where('uuid',$request->productId)->first();
+        $ExistingCustomer = \App\Models\Customer::where('email',$request->email)->first();
+
+        # add the contact information.
+        $newOrder = new \App\Models\Order();
+        $newOrder->company_id = $company->id;
+        $newOrder->title = $product->name;
+        $newOrder->product_name = $product->name;
+        $newOrder->product_description = $product->description;
+        $newOrder->quantity = $request->quantity;
+        $newOrder->unit_price = $request->unitPrice;
+        $newOrder->amount = $request->unitPrice * $request->quantity;
+        $newOrder->save();
+//
+        if($newOrder)
+        {
+            $newCustomerOrder = new CustomerOrder();
+            $newCustomerOrder->customer_id = $ExistingCustomer->id;
+            $newCustomerOrder->order_id = $newOrder->id;
+            $newCustomerOrder->is_paid = 1;
+            $newCustomerOrder->paid_at = \Carbon\Carbon::now();
+            $newCustomerOrder->save();
+        }
+
+        $order = \App\Models\Order::where('uuid', $newOrder->uuid)->firstOrFail();
+
+        $reference = $request->reference;
+
+        $transaction = new PaymentTransaction();
+        $transaction->order_id = $order->id;
+        $transaction->customer_id = $ExistingCustomer->id;
+        $transaction->amount = $request->amount;
+        $transaction->reference = $reference;
+        $transaction->is_successful = 1;
+        $transaction->json_payload = $request;
+        $transaction->save();
+
+//        Notification::send($company->users->first(), new InvoicePaid($order, $ExistingCustomer, $transaction));
+
+        $resource = new Item($ExistingCustomer, new CustomerTransformer(), 'customer');
+
+        return response()->json($fractal->createData($resource)->toArray(), 201);
     }
 }

@@ -65,6 +65,12 @@ Route::group(['namespace' => 'Crm'], function () {
     Route::get('/customer-email/{email}', 'Customer\Customers@customerDetailsWithEmail');
 });
 
+Route::group(['namespace' => 'Invoicing'], function () {
+    Route::get('/fetch_categories', 'Product\Product@fetchCategories');
+    Route::get('/fetch_products/{category_id}', 'Product\Product@fetchProduct');
+    Route::post('add_order_payment','Orders\Order@addOrderFromWhatsappProcessor');
+});
+
 
 //Route::group(['namespace' => 'Invoicing'], function () {
 //    /**

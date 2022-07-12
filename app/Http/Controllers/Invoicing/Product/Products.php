@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Transformers\ProductTransformer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
@@ -97,6 +98,7 @@ class Products extends Controller
      */
     public function create(Request $request, Manager $fractal)
     {
+
         $company = $this->company();
         # get the company
         $this->validate($request, [
@@ -154,6 +156,25 @@ class Products extends Controller
         $product->prices()->createMany($productPrices);
         # add the prices
         $resource = new Item($product, new ProductTransformer(), 'product');
+
+        $baseUrl = env('WHATSAPP_PROCESSOR_ENDPOINT');
+
+        $url = $baseUrl . 'add_product_from_core';
+
+        $headers = [
+            "Accept" => "application/json",
+            "Content-Type" => "application/json"
+        ];
+
+        $response = Http::withHeaders($headers)->post($url ,[
+            'product_name' => $request->input('name'),
+            'product_uuid' => $product->uuid,
+            'price' => $request->prices[0]['price'],
+        ]);
+
+
+
+
         return response()->json($fractal->createData($resource)->toArray(), 201);
     }
 
