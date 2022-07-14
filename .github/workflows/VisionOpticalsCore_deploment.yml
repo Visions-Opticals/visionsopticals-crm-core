@@ -58,7 +58,7 @@ jobs:
             # Base Laravel Settings
             echo APP_NAME="VisionEnhancingSolutions" >> .env
             echo APP_ENV=local >> .env
-            echo APP_KEY=  >> .env
+            echo APP_KEY=68tuyPtIBei0lVrwjKUTM3joLN38xKWN  >> .env
             echo APP_DEBUG=true >> .env
             echo APP_LOG_LEVEL=debug >> .env
             echo APP_URL=https://core-crm.visionenhancingsolutions.app >> .env
