@@ -56,7 +56,7 @@ jobs:
             echo INSTALLED_CORE=false >> .env
 
             # Base Laravel Settings
-            echo APP_NAME=VisionEnhancingSolutions >> .env
+            echo APP_NAME="VisionEnhancingSolutions" >> .env
             echo APP_ENV=local >> .env
             echo APP_KEY=  >> .env
             echo APP_DEBUG=true >> .env
@@ -132,8 +132,8 @@ jobs:
             sudo chmod u=rwx,g=rx,o=x /var/www/core-crm.visionenhancingsolutions.app/artisan
             find "/var/www/core-crm.visionenhancingsolutions.app/" -type f -name '*.php' -exec chmod 644 {} \;
 
-           # php artisan dorcas:setup --repeat --reset
+            # php artisan dorcas:setup --repeat --reset
 
-           #  php artisan passport:install
+             #  php artisan passport:install
 
             echo "Deployment finished!"
