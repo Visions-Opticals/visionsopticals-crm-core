@@ -56,7 +56,7 @@ jobs:
             echo INSTALLED_CORE=false >> .env
 
             # Base Laravel Settings
-            echo APP_NAME=DorcasCoreBase >> .env
+            echo APP_NAME=VisionEnhancingSolutions >> .env
             echo APP_ENV=local >> .env
             echo APP_KEY=  >> .env
             echo APP_DEBUG=true >> .env
@@ -81,9 +81,9 @@ jobs:
             echo DORCAS_BASE_URL=https://core-crm.visionenhancingsolutions.app >> .env
             echo DORCAS_ENV=production >> .env
 
-            echo DORCAS_PARTNER_NAME ="VisionEnhancingOpticals" >> .env
+            echo DORCAS_PARTNER_NAME ="VisionEnhancingSolutions" >> .env
             echo DORCAS_PARTNER_SLUG =community >> .env
-            echo DORCAS_PARTNER_LOGO ="https://dorcas-s3.s3.eu-west-1.amazonaws.com/images/logo_main.png" >> .env
+            echo DORCAS_PARTNER_LOGO ="https://maghic-app-test-local.s3.us-east-2.amazonaws.com/store-6699f840-0325-11ed-bd8c-aa665a019140/vompany/yNJm2tlxmiPjly1ZWfA58gSARTvD34BTG68m9LWD.png" >> .env
             echo DORCAS_PARENT_DOMAIN ="core-crm.visionenhancingsolutions.app" >> .env
 
 
@@ -132,8 +132,8 @@ jobs:
             sudo chmod u=rwx,g=rx,o=x /var/www/core-crm.visionenhancingsolutions.app/artisan
             find "/var/www/core-crm.visionenhancingsolutions.app/" -type f -name '*.php' -exec chmod 644 {} \;
 
-            php artisan dorcas:setup --repeat --reset
+           # php artisan dorcas:setup --repeat --reset
 
-            php artisan passport:install
+           #  php artisan passport:install
 
             echo "Deployment finished!"

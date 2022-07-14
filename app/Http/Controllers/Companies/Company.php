@@ -172,8 +172,15 @@ class Company extends Controller
                 # attempt to remove the file
                 Storage::disk(config('filesystems.default'))->delete($company->logo_url);
             }
-            $path = $request->file('logo')->store('business-logos');
-            $request->request->set('logo_url', $path);
+            // $path = $request->file('logo')->store('business-logos');
+            // $request->request->set('logo_url', $path);
+
+            $path =  $request->file('logo')->store('store-' . $company->uuid.'/vompany' ,'s3');
+
+            Storage::disk('s3')->setVisibility($path , 'public');
+    
+            $pathUrl = Storage::disk('s3')->url($path);
+            $request->request->set('logo_url', $pathUrl);
         }
 
         if ($request->has('extend_subscription')) {

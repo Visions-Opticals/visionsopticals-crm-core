@@ -97,7 +97,7 @@ class CompanyTransformer extends TransformerAbstract
             'email' => $company->email,
             'phone' => $company->phone,
             'website' => $company->website,
-            'logo' => $company->logo,
+            'logo' => $company->logo_url,
             'extra_data' => $company->extra_data ?: [],
             'prefix' => $company->prefix,
             'access_expires_at' => $expiry->toIso8601String(),
