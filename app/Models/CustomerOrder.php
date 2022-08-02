@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class CustomerOrder extends Pivot
 {
     protected $dates = ['paid_at'];
+    public $timestamps = false; 
 
     protected $casts = [
         'is_paid' => 'boolean'

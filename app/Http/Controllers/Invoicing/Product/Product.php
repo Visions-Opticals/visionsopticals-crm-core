@@ -15,6 +15,7 @@ use App\Transformers\ProductTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
@@ -50,6 +51,18 @@ class Product extends Controller
         if (!(clone $product)->delete()) {
             throw new DeletingFailedException('Failed while deleting the product');
         }
+
+        $baseUrl = env('WHATSAPP_PROCESSOR_ENDPOINT');
+        $url = $baseUrl . 'delete_product_from_core';
+        $headers = [
+            "Accept" => "application/json",
+            "Content-Type" => "application/json"
+        ];
+
+        $response = Http::withHeaders($headers)->post($url ,[
+            'product_uuid' => $id,
+        ]);
+
         $resource = new Item($product, new ProductTransformer(), 'product');
         # get the resource
         return response()->json($fractal->createData($resource)->toArray());
@@ -156,6 +169,22 @@ class Product extends Controller
             $barcode = $generator->getBarcode($request->barcode, $generator::TYPE_CODE_128);
             $product->update(['barcode' => $request->barcode , 'barcode_img' => $barcode]);
         }
+
+
+        //this endpoint handles updating data on the backend processor for whatsapp ordering
+        $baseUrl = env('WHATSAPP_PROCESSOR_ENDPOINT');
+        $url = $baseUrl . 'update_product_on_backend_processor';
+        $headers = [
+            "Accept" => "application/json",
+            "Content-Type" => "application/json"
+        ];
+
+        $response = Http::withHeaders($headers)->post($url ,[
+            'product_uuid' => $id,
+            'product_name' => $product->name,
+            'price' => $productPrices[0]['unit_price'] ?? 0,
+        ]);
+
         # encapsulate it in a transaction
         $resource = new Item($product, new ProductTransformer(), 'product');
         return response()->json($fractal->createData($resource)->toArray(), 200);
@@ -194,6 +223,22 @@ class Product extends Controller
             throw new RecordNotFoundException('Could not find the '.$term.' to be removed.');
         }
         $product->categories()->detach($categories);
+
+
+        $baseUrl = env('WHATSAPP_PROCESSOR_ENDPOINT');
+
+        $url = $baseUrl . 'remove_category_from_product';
+
+        $headers = [
+            "Accept" => "application/json",
+            "Content-Type" => "application/json"
+        ];
+
+        $response = Http::withHeaders($headers)->post($url ,[
+            'product_uuid' => $id,
+            'category_uuid' => $request->input('ids')[0],
+        ]);
+
         # detach the category
         $resource = new Item($product, new ProductTransformer(), 'product');
         return response()->json($fractal->createData($resource)->toArray(), 200);

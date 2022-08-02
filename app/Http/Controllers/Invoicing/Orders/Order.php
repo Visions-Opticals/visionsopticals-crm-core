@@ -479,12 +479,13 @@ class Order extends Controller
 
         $this->validate($request, [
             'email' => 'required|max:30',
-            'company_uuid' => 'required',
+            'productId' => 'required',
             'reference' => 'required',
             'amount' => 'required'
         ]);
 
-        $company = Company::where('uuid',$request->company_id)->first();
+        $company_uuid = Company::first();
+        $company = Company::where('uuid',$company_uuid->uuid)->first();
         $product = \App\Models\Product::where('uuid',$request->productId)->first();
         $ExistingCustomer = \App\Models\Customer::where('email',$request->email)->first();
 
@@ -495,8 +496,9 @@ class Order extends Controller
         $newOrder->product_name = $product->name;
         $newOrder->product_description = $product->description;
         $newOrder->quantity = $request->quantity;
-        $newOrder->unit_price = $request->unitPrice;
-        $newOrder->amount = $request->unitPrice * $request->quantity;
+        $newOrder->unit_price = $request->amount;
+        $newOrder->amount = $request->amount * $request->quantity;
+        $newOrder->quantity = $request->quantity;
         $newOrder->save();
 //
         if($newOrder)
