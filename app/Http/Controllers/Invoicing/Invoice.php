@@ -22,6 +22,7 @@ class Invoice extends Controller
      */
     public function index(Request $request, string $id)
     {
+
         $this->data['order'] = $order = Order::where('uuid', $id)->firstOrFail();
         # get the order
         $this->data['recipient'] = $customer = $order->customers()->where('uuid', $request->query('customer'))->firstOrFail();

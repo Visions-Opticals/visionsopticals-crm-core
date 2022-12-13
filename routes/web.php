@@ -429,9 +429,10 @@ Route::group(['namespace' => 'Finance', 'middleware' => ['auth'], 'prefix' => 'f
     Route::post('/transtrak/setup','Transtrak@create');
 
     //unverified transactions routes
-
 	Route::get('/transactions','Transactions@search');
 	Route::post('/transactions/verify','Transactions@verify');
+
+    Route::post('/transactions/generate-report','Transactions@generateReport');
 });
 
 Route::group(['namespace' => 'Finance', 'prefix' => 'finance'], function () {
@@ -475,7 +476,7 @@ Route::group(['namespace' => 'Invoicing', 'middleware' => ['auth']], function ()
     Route::delete('/products/{id}/stocks', 'Product\Product@deleteStocks');
     Route::post('/products/{id}/stocks', 'Product\Product@stockQuantity');
 
-    Route::post('/product/{id}/scan/', 'Product\Product@scanProductWithBarcode');
+    Route::post('/product/scan/', 'Product\Product@scanProductWithBarcode');
 
     /**
      * Order Endpoints
@@ -489,6 +490,8 @@ Route::group(['namespace' => 'Invoicing', 'middleware' => ['auth']], function ()
     Route::get('/orders/{id}/customers', 'Orders\OrderCustomers@index');
     Route::put('/orders/{id}/customers', 'Orders\OrderCustomers@update');
     Route::get('/orders/{id}/reminders', 'Orders\Order@reminders');
+
+    Route::post('/orders/invoices/{id}', 'Orders\Order@invoicing');
 });
 
 Route::group(['namespace' => 'Invoicing'], function () {

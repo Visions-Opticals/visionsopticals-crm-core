@@ -444,7 +444,7 @@ class Product extends Controller
         return response()->json($fractal->createData($resource)->toArray(), 201);
     }
 
-    public function scanProductWithBarcode(Request $request ,Manager $fractal,string $id)
+    public function scanProductWithBarcode(Request $request ,Manager $fractal)
     {
         $company = $this->company();
         # get the currently authenticated company

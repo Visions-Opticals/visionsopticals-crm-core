@@ -85,6 +85,7 @@ jobs:
             echo DORCAS_PARTNER_SLUG =community >> .env
             echo DORCAS_PARTNER_LOGO ="https://maghic-app-test-local.s3.us-east-2.amazonaws.com/store-6699f840-0325-11ed-bd8c-aa665a019140/vompany/yNJm2tlxmiPjly1ZWfA58gSARTvD34BTG68m9LWD.png" >> .env
             echo DORCAS_PARENT_DOMAIN ="core-crm.visionenhancingsolutions.app" >> .env
+            echo HUB_UNIFIER=https://bridge.dorcas.io/ >> .env
 
 
             # Database Settings

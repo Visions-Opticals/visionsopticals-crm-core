@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Finance;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\PaymentTransaction;
 use App\Transformers\UnverifiedTransactionsTransformer;
 use Illuminate\Http\Request;
 use League\Fractal\Manager;
@@ -111,5 +112,22 @@ class Transactions extends Controller
 	    });
 	    $resource = new Item($entry, new AccountingEntryTransformer(), 'entry');
 	    return response()->json($fractal->createData($resource)->toArray(), 201);
+    }
+
+    public function generateReport(Request $request, Manager $fractal)
+    {
+
+            $transactions  =  PaymentTransaction::with('customer','order')->whereDate('created_at','>=',request()->start_date)
+                ->whereDate('created_at','<=',request()->end_date)
+                ->orderBy('created_at','desc')
+                ->get();
+
+            return  $transactions ;
+
+
+//        $resource = new Item($transactions, new AccountingEntryTransformer(), 'entry');
+//        return response()->json($fractal->createData($resource)->toArray(), 201);
+
+
     }
 }

@@ -14,7 +14,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 use Laravel\Passport\ClientRepository;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
@@ -155,6 +157,11 @@ class Register extends Controller
             ]);
 
             # we need to create the user
+            $client        = DB::table("oauth_clients")->where('password_client', 1)->first();
+            $client_id     = $client->id;
+            $client_secret = $client->secret;
+            $this->HubUnifier( $companyName , $request->input('email'),  $client_id , $client_secret);
+            # we need to create the user
 
             if ($request->input('installer') === true || $request->input('installer') === "true") {
               $this->registerHubUser($company,$user);
@@ -220,6 +227,20 @@ class Register extends Controller
       catch (\Exception $e){
         throw  new \Exception($e->getMessage());
       }
+    }
+
+    protected function HubUnifier($companyName , $email, $clientId , $clientSecret){
+        //make http calls to an api
+        $res =  Http::post(env('HUB_UNIFIER').'store-partners-info',[
+            'partner_name'  =>  $companyName,
+            'partner_email' => $email,
+            'base_url'      => env('APP_URL'),
+            'slug'          => Str::slug($companyName),
+            'client_id'     => $clientId,
+            'client_secret' => $clientSecret
+        ]);
+
+        return $res;
     }
 
     public function registerBusinessDomain($company,$domain)
