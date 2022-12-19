@@ -51,7 +51,8 @@ class OrderTransformer extends TransformerAbstract
             'is_trashed' => $order->deleted_at !== null,
             'trashed_at' => !empty($order->deleted_at) ? $order->deleted_at->toIso8601String() : null,
             'updated_at' => $order->updated_at->toIso8601String(),
-            'created_at' => $order->created_at->toIso8601String()
+            'created_at' => $order->created_at->toIso8601String(),
+            'customer' => strtolower($order->customers[0]->email) ?? null,
         ];
         if (!empty($order->product_name)) {
             # we have an inline product

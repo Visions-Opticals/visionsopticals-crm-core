@@ -59,6 +59,7 @@ class Orders extends Controller
             $resource->setMetaValue('search', $search);
             # set the meta value if necessary
         }
+
         $paginator->appends($pagingAppends);
         # add the append terms
         $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
