@@ -33,7 +33,7 @@ class Invoice extends Controller
         # get the company
         $this->data['plan'] = $plan = $order->company->plan;
         # set the account pricing plan
-        $this->data['headerLogo'] = self::DEFAULT_IMAGE;
+        $this->data['headerLogo'] = env('DORCAS_PARTNER_LOGO') ?? self::DEFAULT_IMAGE;
         # set the invoice logo
         $location = $order->company->locations()->with('state')->first();
         if (!empty($location)) {
@@ -43,7 +43,7 @@ class Invoice extends Controller
             $this->data['headerLogo'] = $order->company->logo;
 //            image_to_base64($order->company->logo);
         }
-        
+
         if (ProcessOrder::isServiceRequestTitle($order->title)) {
             # it was created from a service request
             $companyOwner = $order->company->users()->first();
