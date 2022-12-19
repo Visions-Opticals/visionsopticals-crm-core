@@ -40,8 +40,10 @@ class Invoice extends Controller
             $this->data['location'] = $location;
         }
         if (!empty($order->company->logo)) {
-            $this->data['headerLogo'] = image_to_base64($order->company->logo);
+            $this->data['headerLogo'] = $order->company->logo;
+//            image_to_base64($order->company->logo);
         }
+        
         if (ProcessOrder::isServiceRequestTitle($order->title)) {
             # it was created from a service request
             $companyOwner = $order->company->users()->first();
@@ -53,7 +55,7 @@ class Invoice extends Controller
             $partner = $user->partner;
             $this->data['footerText'] = empty($partner) ? 'Powered by Dorcas' : $partner->name;
         }
-        dd('heher');
+
         $pdf = app('snappy.pdf.wrapper');
 
         $title = ($order->is_quote ? 'Quote' : 'Invoice') . ' #';
