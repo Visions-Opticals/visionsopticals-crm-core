@@ -33,7 +33,7 @@ class Invoice extends Controller
         # get the company
         $this->data['plan'] = $plan = $order->company->plan;
         # set the account pricing plan
-        $this->data['headerLogo'] = self::DEFAULT_IMAGE;
+//        $this->data['headerLogo'] = self::DEFAULT_IMAGE;
         # set the invoice logo
         $location = $order->company->locations()->with('state')->first();
         if (!empty($location)) {

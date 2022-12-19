@@ -111,7 +111,7 @@
                 <table style="width: 100%;line-height: inherit;text-align: left;">
                     <tr>
                         <td class="title" style="padding: 5px;vertical-align: top;padding-bottom: 20px;font-size: 45px;line-height: 45px;color: #333;">
-                            <img src="{{ $headerLogo }}" style="width:100%; max-width:300px;">
+{{--                            <img src="{{ $headerLogo }}" style="width:100%; max-width:300px;">--}}
                         </td>
                         <td style="padding: 5px;vertical-align: top;text-align: right;padding-bottom: 20px;">
                             {{ $order->is_quote ? 'Quote' : 'Invoice' }} #: @if ($recipient->pivot instanceof \App\Models\CustomerOrder){{ $recipient->pivot->invoice_number }} @else {{ $order->invoice_number }}@endif<br>
