@@ -34,7 +34,6 @@ class Invoice extends Controller
         $this->data['plan'] = $plan = $order->company->plan;
         # set the account pricing plan
         $this->data['headerLogo'] = self::DEFAULT_IMAGE;
-        dd($this->data);
         # set the invoice logo
         $location = $order->company->locations()->with('state')->first();
         if (!empty($location)) {
@@ -55,6 +54,7 @@ class Invoice extends Controller
             $this->data['footerText'] = empty($partner) ? 'Powered by Dorcas' : $partner->name;
         }
         $pdf = app('snappy.pdf.wrapper');
+        dd( $pdf );
         $title = ($order->is_quote ? 'Quote' : 'Invoice') . ' #';
         return $pdf->view('emails.inlined.invoicing.invoice', $this->data)
                     ->setOption('images', true)
