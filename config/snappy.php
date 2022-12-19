@@ -5,7 +5,7 @@ return array(
 
     'pdf' => array(
         'enabled' => true,
-        'binary'  =>"/usr/bin/wkhtmltopdf",
+        'binary'  =>"/usr/local/bin/wkhtmltopdf",
 //            "/usr/local/bin/wkhtmltopdf",
 //base_path('vendor/bin/wkhtmltopdf-amd64'),
         'timeout' => false,
