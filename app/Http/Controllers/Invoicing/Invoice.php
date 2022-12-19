@@ -33,8 +33,7 @@ class Invoice extends Controller
         # get the company
         $this->data['plan'] = $plan = $order->company->plan;
         # set the account pricing plan
-        $this->data['headerLogo'] = "https://maghic-app-test-local.s3.us-east-2.amazonaws.com/store-9b14205e-0209-11ed-8651-02424952d784/vompany/VtxZQaLtztYa1aYAdv63iK4xDgEkFL3IlL1b4wjn.png";
-        //self::DEFAULT_IMAGE;
+        $this->data['headerLogo'] = self::DEFAULT_IMAGE;
         # set the invoice logo
         $location = $order->company->locations()->with('state')->first();
         if (!empty($location)) {
