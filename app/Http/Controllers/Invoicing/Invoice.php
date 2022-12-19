@@ -53,8 +53,9 @@ class Invoice extends Controller
             $partner = $user->partner;
             $this->data['footerText'] = empty($partner) ? 'Powered by Dorcas' : $partner->name;
         }
+        dd('heher');
         $pdf = app('snappy.pdf.wrapper');
-        dd( $pdf );
+
         $title = ($order->is_quote ? 'Quote' : 'Invoice') . ' #';
         return $pdf->view('emails.inlined.invoicing.invoice', $this->data)
                     ->setOption('images', true)
