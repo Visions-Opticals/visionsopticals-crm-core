@@ -32,6 +32,9 @@ class Orders extends Controller
     {
         $search = $request->query('search');
         # get the search term in the query, if any
+
+
+
         $limit = $request->query('limit', 10);
         # the maximum number of customers to return
         $company = $this->company();
@@ -54,16 +57,21 @@ class Orders extends Controller
         $resource = new Collection($paginator->getCollection(), new OrderTransformer(), 'order');
         # create the resource
         if (!empty($search)) {
+
             $pagingAppends['search'] = $search;
             # append the search term to the paginator
+
             $resource->setMetaValue('search', $search);
             # set the meta value if necessary
         }
 
+
         $paginator->appends($pagingAppends);
         # add the append terms
+
         $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
         # set the paginator
+
         return response()->json($fractal->createData($resource)->toArray());
     }
 

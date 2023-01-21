@@ -41,7 +41,7 @@ class Order extends Model
      */
     public function getInvoiceNumberAttribute(): string
     {
-        return str_pad($this->attributes['id'], 6, '0', STR_PAD_LEFT);
+        return str_pad($this->attributes['id'] , 6, '0', STR_PAD_LEFT);
     }
 
     /**

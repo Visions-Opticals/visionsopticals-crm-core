@@ -12,6 +12,7 @@
 */
 
 use App\Dorcas\Enum\PermissionName;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 
@@ -490,7 +491,6 @@ Route::group(['namespace' => 'Invoicing', 'middleware' => ['auth']], function ()
     Route::get('/orders/{id}/customers', 'Orders\OrderCustomers@index');
     Route::put('/orders/{id}/customers', 'Orders\OrderCustomers@update');
     Route::get('/orders/{id}/reminders', 'Orders\Order@reminders');
-
     Route::post('/orders/invoices/{id}', 'Orders\Order@invoicing');
 });
 

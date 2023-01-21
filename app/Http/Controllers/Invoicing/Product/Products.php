@@ -122,6 +122,7 @@ class Products extends Controller
             'product_variant' => $request->input('product_variant',''),
             'product_variant_type' => $request->input('product_variant_type',''),
             'unit_price' => $request->input('default_price', 0.00),
+            'inventory' => $request->inventory ?? 0,
         ]);
 
 

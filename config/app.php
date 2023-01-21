@@ -91,4 +91,6 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'allow_variant_inventory' => env('ALLOW_VARIANT_INVENTORY', true)
+
 ];

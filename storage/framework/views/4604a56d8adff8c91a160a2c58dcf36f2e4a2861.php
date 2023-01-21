@@ -191,7 +191,7 @@
         </tr>
         <tr class="footer">
             <td colspan="3" style="padding: 5px;vertical-align: bottom;text-align: center;color: #333333;font-size: 13px;">
-                &copy; <?php echo e(date('Y')); ?> <?php echo e(!empty($app['product_name']) ? $app['product_name'] : 'Dorcas'); ?>. All rights reserved.
+                &copy; <?php echo e(date('Y')); ?> <?php echo e(!empty($app['product_name']) ? $app['product_name'] : env('APP_NAME')); ?>. All rights reserved.
             </td>
         </tr>
     </table>

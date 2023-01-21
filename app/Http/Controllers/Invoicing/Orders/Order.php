@@ -10,6 +10,7 @@ use App\Jobs\Invoicing\ProcessOrder;
 use App\Models\Company;
 use App\Models\CustomerOrder;
 use App\Models\PaymentTransaction;
+use App\Models\Product;
 use App\Notifications\InvoicePaid;
 use App\Transformers\CustomerTransformer;
 use App\Transformers\OrderTransformer;
@@ -529,6 +530,66 @@ class Order extends Controller
         $transaction->is_successful = 1;
         $transaction->json_payload  = $request;
         $transaction->save();
+
+        if(env('ALLOW_VARIANT_INVENTORY') === true){
+            //fetch variant
+            $arraysOfVariant = Product::whereNotNull('product_variant')
+                ->where('product_variant_type', 'Inventory')
+                ->where('product_parent', request()->productId)
+                ->get();
+
+
+            if(count( $arraysOfVariant) > 0){
+                $orders = request()->orders;
+                $rs = $orders['right_sphere'];
+                $ls = $orders['left_sphere'];
+                $rc = $orders['right_cylinder'];
+                $lc = $orders['left_cylinder'];
+
+                foreach ($arraysOfVariant as $index => $variant) {
+                    //convert ti array with comma seperated values
+                    $variantToArray = preg_split("/\,/", $variant->product_variant);
+                    //fetch the last two arrays
+                    $arr = array_slice($variantToArray, -1, count($variantToArray) - 1, true);
+
+                    $value = $arr[count($variantToArray) - 1];
+
+                    if ($variantToArray[0] === 'rc') {
+
+                        if ($value === $rs && $rs !== null) {
+                            if ($variant->inventory > 0) {
+                                $variant->inventory -= 1;
+                                $variant->save();
+                            }
+                        }
+                    } elseif ($variantToArray[0] === 'rs') {
+
+                        if ($value === $rc && $rc !== null) {
+                            if ($variant->inventory > 0) {
+                                $variant->inventory -= 1;
+                                $variant->save();
+                            }
+                        }
+                    } elseif ($variantToArray[0] === 'ls') {
+
+                        if ($value === $rc && $rc !== null) {
+                            if ($variant->inventory > 0) {
+                                $variant->inventory -= 1;
+                                $variant->save();
+                            }
+                        }
+                    } elseif ($variantToArray[0] === 'lc') {
+
+                        if ($value === $rc && $rc !== null) {
+                            if ($variant->inventory > 0) {
+                                $variant->inventory -= 1;
+                                $variant->save();
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
 //        Notification::send($company->users->first(), new InvoicePaid($order, $ExistingCustomer, $transaction));
 

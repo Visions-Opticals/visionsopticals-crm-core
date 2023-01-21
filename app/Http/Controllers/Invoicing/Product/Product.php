@@ -287,6 +287,7 @@ class Product extends Controller
             "Content-Type" => "application/json"
         ];
 
+
         $response = Http::withHeaders($headers)->post($url ,[
             'product_uuid' => $id,
             'category_uuid' => $request->input('ids'),

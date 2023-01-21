@@ -163,6 +163,7 @@ $app->configure('queue');
 $app->configure('scout');
 $app->configure('services');
 $app->configure('snappy');
+$app->configure('scout');
 
 
 /*
@@ -240,6 +241,7 @@ $app->register(\Barryvdh\Snappy\LumenServiceProvider::class);
 $app->register(\Fedeisas\LaravelMailCssInliner\LaravelMailCssInlinerServiceProvider::class);
 $app->register(\Spatie\Permission\PermissionServiceProvider::class);
 //$app->register(\Illuminate\Redis\RedisServiceProvider::class);
+$app->register(Laravel\Scout\ScoutServiceProvider::class);
 
 $app->register(\Illuminate\Queue\QueueServiceProvider::class);
 
