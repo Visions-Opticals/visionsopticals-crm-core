@@ -160,10 +160,13 @@ $app->configure('invoicing');
 $app->configure('mail');
 $app->configure('permission');
 $app->configure('queue');
-$app->configure('scout');
+//$app->configure('scout');
 $app->configure('services');
 $app->configure('snappy');
 $app->configure('scout');
+$app->configure('tinker');
+
+
 
 
 /*
@@ -244,6 +247,7 @@ $app->register(\Spatie\Permission\PermissionServiceProvider::class);
 $app->register(Laravel\Scout\ScoutServiceProvider::class);
 
 $app->register(\Illuminate\Queue\QueueServiceProvider::class);
+$app->register(\Laravel\Tinker\TinkerServiceProvider::class);
 
 //$app->register(\Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class);
 //$app->register(Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class);

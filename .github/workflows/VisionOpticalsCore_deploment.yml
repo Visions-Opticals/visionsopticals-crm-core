@@ -111,7 +111,7 @@ jobs:
 
             echo WHATSAPP_PROCESSOR_ENDPOINT=https://admin.visionenhancingsolutions.app/api/ >> .env
             
-            echo ALLOW_VARIANT_INVENTORY=true >> .env
+            echo ALLOW_VARIANT_INVENTORY="yes" >> .env
         
 
             # Other Laravel Settings
@@ -136,9 +136,5 @@ jobs:
             sudo chmod u=rwx,g=rw,o=rw /var/www/core-crm.visionenhancingsolutions.app/storage/logs/lumen.log
             sudo chmod u=rwx,g=rx,o=x /var/www/core-crm.visionenhancingsolutions.app/artisan
             find "/var/www/core-crm.visionenhancingsolutions.app/" -type f -name '*.php' -exec chmod 644 {} \;
-
-            # php artisan dorcas:setup --repeat --reset
-
-            #  php artisan passport:install
-
+            
             echo "Deployment finished!"

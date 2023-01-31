@@ -158,20 +158,23 @@ class Products extends Controller
         # add the prices
         $resource = new Item($product, new ProductTransformer(), 'product');
 
-        $baseUrl = env('WHATSAPP_PROCESSOR_ENDPOINT');
+        if($request->input('product_variant') == null){
 
-        $url = $baseUrl . 'add_product_from_core';
+            $baseUrl = env('WHATSAPP_PROCESSOR_ENDPOINT');
 
-        $headers = [
-            "Accept" => "application/json",
-            "Content-Type" => "application/json"
-        ];
+            $url = $baseUrl . 'add_product_from_core';
 
-        $response = Http::withHeaders($headers)->post($url ,[
-            'product_name' => $request->input('name'),
-            'product_uuid' => $product->uuid,
-            'price' => $request->prices[0]['price'],
-        ]);
+            $headers = [
+                "Accept" => "application/json",
+                "Content-Type" => "application/json"
+            ];
+
+            $response = Http::withHeaders($headers)->post($url, [
+                'product_name' => $request->input('name'),
+                'product_uuid' => $product->uuid,
+                'price' => $request->prices[0]['price'],
+            ]);
+        }
 
 
 

@@ -9,6 +9,7 @@ use App\Transformers\UserAccessGrantTransformer;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
@@ -122,7 +123,7 @@ class User extends Controller
      * @param Manager $fractal
      * @param string  $id
      *
-     * @return \Illuminate\Http\JsonResponse
+//     * @return \Illuminate\Http\JsonResponse
      */
     public function verifyUser(Request $request, Manager $fractal, string $id)
     {
@@ -132,7 +133,9 @@ class User extends Controller
         $user->saveOrFail();
         # save the changes
         $resource = new Item($user, new UserTransformer(), 'user');
-        return response()->json($fractal->createData($resource)->toArray(), 200);
+
+        return view('test');
+//        return response()->json($fractal->createData($resource)->toArray(), 200);
     }
     
     /**
@@ -145,6 +148,7 @@ class User extends Controller
     public function resendVerificationEmail(Request $request, Manager $fractal, string $id)
     {
         $user = \App\Models\User::where('uuid', $id)->firstOrFail();
+
         # get the user
         event(new AccountRegistered($user, $user->company));
         # trigger the event

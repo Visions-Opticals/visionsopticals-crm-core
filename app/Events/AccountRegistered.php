@@ -5,6 +5,7 @@ namespace App\Events;
 
 use App\Models\Company;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class AccountRegistered extends Event
 {

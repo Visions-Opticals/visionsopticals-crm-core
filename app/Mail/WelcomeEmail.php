@@ -9,6 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class WelcomeEmail extends Mailable implements ShouldQueue
 {
@@ -59,11 +60,14 @@ class WelcomeEmail extends Mailable implements ShouldQueue
     public function build()
     {
         $configuration = !empty($this->partner) && !empty($this->partner->extra_data) ? $this->partner->extra_data : [];
+       // Log::info($configuration);
         $subject = 'Welcome to ' . (!empty($configuration['hubConfig']['product_name']) ? $configuration['hubConfig']['product_name'] : 'Hub') . ', '.$this->user->firstname;
         $subdomain = 'https://hub.dorcas.io';
         if (!empty($this->domain)) {
             $subdomain = 'https://' . $this->domain->prefix . '.' . $this->domain->domain['data']['domain'];
         }
+      //  $subdomain = env('SITE_URL');
+
         $supportEmail = config('mail.from.address');
         $supportName = config('mail.from.name');
         if (!empty($this->partner)) {

@@ -7,6 +7,7 @@ use App\Events\AccountRegistered;
 use App\Mail\WelcomeEmail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class AccountRegisteredListener implements ShouldQueue
@@ -18,6 +19,7 @@ class AccountRegisteredListener implements ShouldQueue
      */
     public function handle(AccountRegistered $event)
     {
+
         $partner = $event->user->partner ?: null;
         # get the partner for the user
         $domains = null;

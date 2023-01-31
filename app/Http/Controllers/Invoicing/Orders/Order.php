@@ -531,7 +531,7 @@ class Order extends Controller
         $transaction->json_payload  = $request;
         $transaction->save();
 
-        if(env('ALLOW_VARIANT_INVENTORY') === true){
+        if(env('ALLOW_VARIANT_INVENTORY') === 'yes'){
             //fetch variant
             $arraysOfVariant = Product::whereNotNull('product_variant')
                 ->where('product_variant_type', 'Inventory')

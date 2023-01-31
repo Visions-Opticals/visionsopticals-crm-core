@@ -107,6 +107,7 @@ Route::group(['namespace' => 'Auth', 'middleware' => ['auth']], function () {
 
 Route::put('/users/{id}/verify-account', 'Users\User@verifyUser');
 Route::get('/users/{id}', 'Users\User@index');
+Route::get('/verify-email/{id}', 'Users\User@verifyUser');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('companies', 'Companies\Companies@index');
@@ -192,6 +193,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/states/{id}', 'Common\States@single');
     
     Route::post('/users/{id}/resend-verification', 'Users\User@resendVerificationEmail');
+
     Route::post('/users/{id}', 'Users\User@update');
     Route::put('/users/{id}', 'Users\User@update');
 });
