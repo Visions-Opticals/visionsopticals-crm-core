@@ -91,13 +91,13 @@ jobs:
 
             # Database Settings
             echo DB_CONNECTION=mysql >> .env
-            echo DB_HOST=${{secrets.DB_HOST}} >> .env
+            echo DB_HOST="visions-crm-cluster-cluster.cluster-ckqjoo1ic5p3.eu-west-1.rds.amazonaws.com" >> .env
             echo DB_PORT=3306 >> .env
             echo DB_DATABASE="visions_opticals_crm_core" >> .env
             echo DB_USERNAME= ${{secrets.DB_USER}} >> .env
             echo DB_PASSWORD= "${{secrets.DB_PASSWORD}}" >> .env
 
-            echo DB_HUB_HOST= ${{secrets.DB_HOST}} >> .env
+            echo DB_HUB_HOST="visions-crm-cluster-cluster.cluster-ckqjoo1ic5p3.eu-west-1.rds.amazonaws.com"  >> .env
             echo DB_HUB_PORT=3306 >> .env
             echo DB_HUB_DATABASE= ${{secrets.DB_NAME}} >> .env
             echo DB_HUB_USERNAME= ${{secrets.DB_USER}} >> .env

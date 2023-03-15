@@ -1403,6 +1403,7 @@ CREATE TABLE `orders` (
   `quantity` int NOT NULL DEFAULT '0',
   `unit_price` decimal(10,2) DEFAULT '0.00',
   `currency` char(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'NGN',
+  `status` enum('processed','pending','completed','delivered') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `amount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
   `due_at` date DEFAULT NULL,
   `reminder_on` tinyint unsigned NOT NULL DEFAULT '0',

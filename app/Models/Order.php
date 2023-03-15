@@ -11,7 +11,8 @@ use Laravel\Scout\Searchable;
 
 class Order extends Model
 {
-    use SoftDeletes, Searchable;
+    use  Searchable ,SoftDeletes;
+
 
     protected $dates = ['due_at'];
 

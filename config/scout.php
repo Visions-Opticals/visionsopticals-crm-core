@@ -70,7 +70,7 @@ return [
     |
     */
 
-    'soft_delete' => true,
+    'soft_delete' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -85,7 +85,7 @@ return [
 
     'algolia' => [
         'id' => env('ALGOLIA_APP_ID', '7JRADL18WR'),
-        'secret' => env('ALGOLIA_SECRET', '88f9be37a7458dfc87b9411af6d15eb4'),
+        'secret' => env('ALGOLIA_SECRET', '98e22856088ec5e164c5c1ddec5ac254'),
     ],
 
 ];

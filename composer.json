@@ -36,7 +36,9 @@
         "spatie/laravel-permission": "^5.3.1",
         "hashids/hashids": "^4.0",
         "ext-json": "*",
-        "picqer/php-barcode-generator": "^2.2"
+        "picqer/php-barcode-generator": "^2.2",
+        "meilisearch/meilisearch-php": "^0.27.0",
+        "http-interop/http-factory-guzzle": "^1.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -489,6 +489,7 @@ Route::group(['namespace' => 'Invoicing', 'middleware' => ['auth']], function ()
     Route::delete('/orders/{id}', 'Orders\Order@delete');
     Route::get('/orders/{id}', 'Orders\Order@index');
     Route::put('/orders/{id}', 'Orders\Order@update');
+    Route::put('/orders/status/{id}/', 'Orders\Order@updateStatus');
     Route::delete('/orders/{id}/customers', 'Orders\OrderCustomers@delete');
     Route::get('/orders/{id}/customers', 'Orders\OrderCustomers@index');
     Route::put('/orders/{id}/customers', 'Orders\OrderCustomers@update');

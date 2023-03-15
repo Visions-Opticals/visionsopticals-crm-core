@@ -33,8 +33,6 @@ class Orders extends Controller
         $search = $request->query('search');
         # get the search term in the query, if any
 
-
-
         $limit = $request->query('limit', 10);
         # the maximum number of customers to return
         $company = $this->company();
@@ -47,14 +45,18 @@ class Orders extends Controller
                                             ->withCount(['customers'])
                                             ->latest()
                                             ->paginate($limit);
+
         } else {
             # searching for something
             $paginator = \App\Models\Order::search($search)
-                                                ->where('company_id', $company->id)
+//                                                ->where('company_id', $company->id)
                                                 ->paginate($limit);
+
         }
+
         # get the orders
         $resource = new Collection($paginator->getCollection(), new OrderTransformer(), 'order');
+
         # create the resource
         if (!empty($search)) {
 
@@ -71,6 +73,7 @@ class Orders extends Controller
 
         $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
         # set the paginator
+
 
         return response()->json($fractal->createData($resource)->toArray());
     }

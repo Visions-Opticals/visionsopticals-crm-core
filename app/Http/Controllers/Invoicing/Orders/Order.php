@@ -123,6 +123,31 @@ class Order extends Controller
         return response()->json($fractal->createData($resource)->toArray());
     }
 
+
+    /**
+     * @param Request $request
+     * @param Manager $fractal
+     * @param string  $id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
+    public function updateStatus(Request $request , Manager $fractal , string $id){
+        $company = $this->company($request);
+        # retrieve the company
+        $this->validate($request, [
+            'status' => 'required',
+        ]);
+        # validate the request
+        $order = $company->orders()->where('uuid', $id)->firstOrFail();
+
+        $order->update(['status' => $request->status]);
+
+        # save the changes
+        $resource = new Item($order, new OrderTransformer(), 'order');
+        return response()->json($fractal->createData($resource)->toArray(), 200);
+    }
+
     /**
      * @param Request $request
      * @param Manager $fractal
@@ -518,7 +543,9 @@ class Order extends Controller
             $newCustomerOrder->save();
         }
 
-        $order = \App\Models\Order::where('uuid', $newOrder->uuid)->firstOrFail();
+        $order = \App\Models\Order::where('uuid', $newOrder->uuid)->with('customers')->firstOrFail();
+
+
 
         $reference = $request->reference;
 
@@ -592,7 +619,7 @@ class Order extends Controller
         }
 
 //        Notification::send($company->users->first(), new InvoicePaid($order, $ExistingCustomer, $transaction));
-
+        dispatch(new ProcessOrder($order));
         $resource = new Item($ExistingCustomer, new CustomerTransformer(), 'customer');
 
         return response()->json($fractal->createData($resource)->toArray(), 201);
