@@ -54,7 +54,7 @@ class OrderTransformer extends TransformerAbstract
             'trashed_at' => !empty($order->deleted_at) ? $order->deleted_at->toIso8601String() : null,
             'updated_at' => $order->updated_at->toIso8601String(),
             'created_at' => $order->created_at->toIso8601String(),
-            'customer' =>  empty($order->customers) ? strtolower($order->customers[0]->email) : 'nil',
+            'customer' =>  count($order->customers)>0 ? strtolower($order->customers[0]->email) : 'nil',
 
         ];
         if (!empty($order->product_name)) {
